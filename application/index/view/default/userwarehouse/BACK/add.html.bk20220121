@@ -1,0 +1,383 @@
+{{include file="public/header" /}}
+
+<!-- conntent start  -->
+<div class="am-g am-padding-sm" id="user-warehouse-popup">
+    <!-- form start -->
+    <form class="am-form form-validation view-save" action="{{:MyUrl('index/userwarehouse/save')}}" method="POST" request-type="ajax-fun" request-value="ViewModalBack"  enctype="multipart/form-data">
+        <input type="hidden" name='id' {{if isset($params['id'])}} value="{{$params['id']}}" {{/if}}/>
+        <input type="hidden" id="getSkuValUrl" value="{{:MyUrl('index/userwarehouse/getSkuVal')}}" />
+
+        <!-- 入库信息 -->
+        <div class="am-panel am-panel-default" id="goods-nav-base">
+            <div class="am-panel-hd">
+                <h3 class="am-panel-title">入库信息</h3>
+            </div>
+            <div class="am-panel-bd am-padding-vertical-xs">
+			    {{if empty($data)}}
+                <div class="am-form-group-add">
+                    <label>外包装参数<span class="am-form-group-label-tips-must">必填</span></label>
+                    <div class="am-alert am-alert-warning am-radius am-margin-top-0" data-am-alert>
+                        <p>分别填写每个包装的尺寸、重量信息</p>
+                    </div>
+                    <!--表列表数据 -->
+                    <div class="parameters-container am-margin-top-sm">
+                        <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm parameters-table2 table-thead-beautify am-margin-bottom-0">
+                            <thead>
+                                <tr>
+                                    <th class="spec-quick-th-title">长（cm）</th>
+                                    <th class="spec-quick-th-title">宽（cm）</th>
+                                    <th class="spec-quick-th-title">高（cm）</th>
+                                    <th class="spec-quick-th-title">重量（kg）</th>
+                                    <th class="spec-quick-th-value">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="am-text-middle">
+                                        <input type="number" name="parameters_long[]" placeholder="长" value="" data-validation-message="请填写长度" maxlength="10" required />
+                                    </td>
+                                    <td class="am-text-middle">
+                                        <input type="number" name="parameters_width[]" placeholder="宽" value="" data-validation-message="请填写宽度" maxlength="10" required />
+                                    </td>
+                                    <td class="am-text-middle">
+                                        <input type="number" name="parameters_height[]" placeholder="高" value="" maxlength="10" data-validation-message="请填写高度" required />
+                                    </td>
+                                    <td class="am-text-middle">
+                                        <input type="number" name="parameters_weight[]" placeholder="重量" value="" data-validation-message="请填写重量" maxlength="10" required />
+                                    </td>
+                                    <td class="am-text-middle">
+                                        <a href="javascript:boxRemove(this);" class="am-text-xs am-text-danger line-remove">移除</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <label>商品信息<span class="am-form-group-label-tips-must">必填</span></label>
+                    <div class="parameters-container am-margin-top-sm">
+                        <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm parameters-table table-thead-beautify am-margin-bottom-0">
+                            <thead>
+                                <tr>
+                                    <th class="spec-quick-th-title" style="width:23%">商品名</th>
+                                    <th class="spec-quick-th-title" style="width:23%">规格</th>
+                                    <th class="spec-quick-th-title" style="width:23%">SKU码</th>
+                                    <th class="spec-quick-th-title" style="width:23%">数量</th>
+                                    <th class="spec-quick-th-value">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+								    <td class="am-text-middle">
+                                        <select name="goods_id[]" class="am-radius  selection-form-goods" data-placeholder="请选择..." data-validation-message="请选择商品" onchange="javascript:getSkuVal(this)">
+                                            <option value="0">请选择...</option>
+                                            {{foreach $goods_publish_list as $v}}
+                                                <option value="{{$v.goods_id}}">{{$v.title}}</option>
+                                            {{/foreach}}
+                                        </select>
+                                    </td>
+                                    <td class="am-text-middle">
+                                        <select name="spec" class="am-radius  selection-form-goods" data-placeholder="请选择..." data-validation-message="请选择商品规格" onchange="javascript:setSkuVal(this)">
+                                            <option value="0">请选择...</option>
+                                        </select>                        
+                                    </td>
+                                    <td class="am-text-middle">
+                                        <input type="text" readonly name="parameters_sku[]" placeholder="sku码" value="" maxlength="12" required />
+                                    </td>
+                                    <td class="am-text-middle">
+                                        <input type="number" name="parameters_cnt[]" placeholder="数量" value="" data-validation-message="请填写数量" maxlength="10" required />
+                                    </td>
+                                    <td class="am-text-middle">
+                                        <a href="javascript:;" class="am-text-xs am-text-danger line-remove">移除</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="am-margin-top-sm">
+                        <span class="business-operations-submit parameters-line-add">+添加商品</span>
+                    </div>
+                </div>
+                {{else}}
+                <input type="hidden" name="put_id" value="{{$data['put_id']}}" />
+				    {{foreach $data['boxs'] as $val}}
+                        <div class="am-form-group-add">
+                            <label>外包装参数<span class="am-form-group-label-tips-must">必填</span></label>
+                            <div class="am-alert am-alert-warning am-radius am-margin-top-0" data-am-alert>
+                                <p>分别填写每个包装的尺寸、重量信息</p>
+                            </div>
+                            <!--表列表数据 -->
+                            <div class="parameters-container am-margin-top-sm">
+                                <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm parameters-table2 table-thead-beautify am-margin-bottom-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="spec-quick-th-title">长（cm）</th>
+                                            <th class="spec-quick-th-title">宽（cm）</th>
+                                            <th class="spec-quick-th-title">高（cm）</th>
+                                            <th class="spec-quick-th-title">重量（kg）</th>
+                                            <th class="spec-quick-th-value">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="am-text-middle">
+                                                <input type="number" name="parameters_long[]" placeholder="长" value="{{$val['box_length']}}" data-validation-message="请填写长度" maxlength="10" required />
+                                            </td>
+                                            <td class="am-text-middle">
+                                                <input type="number" name="parameters_width[]" placeholder="宽" value="{{$val['box_width']}}" data-validation-message="请填写宽度" maxlength="10" required />
+                                            </td>
+                                            <td class="am-text-middle">
+                                                <input type="number" name="parameters_height[]" placeholder="高" value="{{$val['box_height']}}" maxlength="10" data-validation-message="请填写高度" required />
+                                            </td>
+                                            <td class="am-text-middle">
+                                                <input type="number" name="parameters_weight[]" placeholder="重量" value="{{$val['box_weight']}}" data-validation-message="请填写重量" maxlength="10" required />
+                                            </td>
+                                            <td class="am-text-middle">
+                                                <a href="javascript:;" class="am-text-xs am-text-danger line-remove">移除</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <label>商品信息<span class="am-form-group-label-tips-must">必填</span></label>
+                            <div class="parameters-container am-margin-top-sm">
+                                <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm parameters-table table-thead-beautify am-margin-bottom-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="spec-quick-th-title" style="width:23%">商品名</th>
+                                            <th class="spec-quick-th-title" style="width:23%">规格</th>
+                                            <th class="spec-quick-th-title" style="width:23%">SKU码</th>
+                                            <th class="spec-quick-th-title" style="width:23%">数量</th>
+                                            <th class="spec-quick-th-value">操作</th>
+                                        </tr>
+                                    </thead>
+									{{foreach $data["details"][$val['box_id']] as $v}}
+                                    <tbody>
+                                        <tr>
+										    <td class="am-text-middle">
+                                                <select name="goods_id[]" class="am-radius  selection-form-goods" data-placeholder="请选择..." data-validation-message="请选择商品" onchange="javascript:getSkuVal(this)">
+                                                    <option value="0">请选择...</option>
+                                                        {{foreach $goods_publish_list as $value}}
+                                                            <option value="{{$value.goods_id}}" {{if isset($v['good_id']) and $v['good_id'] eq $value['goods_id']}}selected{{/if}}>{{$value.title}}</option>
+                                                        {{/foreach}}
+                                                </select>
+                                            </td>
+                                            <td class="am-text-middle">
+                                                <select name="spec" class="am-radius  selection-form-goods" data-placeholder="请选择..." data-validation-message="请选择商品规格" onchange="javascript:setSkuVal(this)" {{if empty($v['speclist'][0]["value"])}}disabled="disabled"{{/if}}>
+                                                    <option value="0">请选择...</option>
+													{{foreach $v['speclist'] as $spec}}
+                                                        <option value="{{$spec.id}}-{{$spec.barcode}}" {{if isset($spec['barcode']) and $spec['barcode'] eq $v['good_sku']}}selected{{/if}}>{{$spec.value}}</option>
+                                                    {{/foreach}}
+                                                </select>                        
+                                            </td>
+                                            <td class="am-text-middle">
+                                                <input type="text" readonly name="parameters_sku[]" placeholder="sku码" value="{{$v['good_sku']}}" maxlength="12" required />
+                                            </td>
+                                            <td class="am-text-middle">
+                                                <input type="number" name="parameters_cnt[]" placeholder="数量" value="{{$v['good_num']}}" data-validation-message="请填写数量" maxlength="10" required />
+                                            </td>
+                                            <td class="am-text-middle">
+                                                <a href="javascript:;" class="am-text-xs am-text-danger line-remove">移除</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+									{{/foreach}}
+                                </table>
+                            </div>
+                            <div class="am-margin-top-sm">
+                                <span class="business-operations-submit parameters-line-add">+添加商品</span>
+                            </div>
+                        </div>
+					{{/foreach}}
+				{{/if}}
+			</div>
+            <div class="am-margin-top-sm">
+                <span class="business-operations-submit parameters-box-add">+添加箱子</span>
+            </div>
+        </div>
+
+        <div id="product_hidden" style="display:none;">
+            <table>
+              <tr>
+                <td class="am-text-middle">
+                    <select name="goods_id[]" class="am-radius  selection-form-goods" data-placeholder="请选择..." data-validation-message="请选择商品" onchange="javascript:getSkuVal(this)">
+                        <option value="0">请选择...</option>
+                        {{foreach $goods_publish_list as $v}}
+                            <option value="{{$v.goods_id}}" >{{$v.title}}</option>
+                        {{/foreach}}
+                    </select>
+                </td>
+                <td class="am-text-middle">
+                    <select name="spec" class="am-radius  selection-form-goods" data-placeholder="请选择..." data-validation-message="请选择商品规格" onchange="javascript:setSkuVal(this)">
+                        <option value="0">请选择...</option>
+                    </select>                        
+                </td>
+                <td class="am-text-middle">
+                    <input type="text" readonly name="parameters_sku[]" placeholder="sku码" value="" data-validation-message="请填写SKU" maxlength="12" required />
+                </td>
+                <td class="am-text-middle">
+                    <input type="number" name="parameters_cnt[]" placeholder="数量" value="" data-validation-message="请填写重量" maxlength="10" required />
+                </td>
+                <td class="am-text-middle">
+                    <a href="javascript:;" class="am-text-xs am-text-danger line-remove">移除</a>
+                </td>
+              </tr>
+            </table>
+        </div>
+        <div id="box_hidden" class="am-form-group" style="display:none;">
+            <label>外包装参数<span class="am-form-group-label-tips-must">必填</span></label>
+            <div class="am-alert am-alert-warning am-radius am-margin-top-0" data-am-alert>
+                <p>分别填写每个包装的尺寸、重量信息</p>
+            </div>
+            <!--表列表数据 -->
+            <div class="parameters-container am-margin-top-sm">
+                <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm parameters-table2 table-thead-beautify am-margin-bottom-0">
+                    <thead>
+                        <tr>
+                            <th class="spec-quick-th-title">长（cm）</th>
+                            <th class="spec-quick-th-title">宽（cm）</th>
+                            <th class="spec-quick-th-title">高（cm）</th>
+                            <th class="spec-quick-th-title">重量（kg）</th>
+                            <th class="spec-quick-th-value">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="am-text-middle">
+                                <input type="number" name="parameters_long[]" placeholder="长" value="" data-validation-message="请填写长度" maxlength="10" required />
+                            </td>
+                            <td class="am-text-middle">
+                                <input type="number" name="parameters_width[]" placeholder="宽" value="" data-validation-message="请填写宽度" maxlength="10" required />
+                            </td>
+                            <td class="am-text-middle">
+                                <input type="number" name="parameters_height[]" placeholder="高" value="" maxlength="10" data-validation-message="请填写高度" required />
+                            </td>
+                            <td class="am-text-middle">
+                                <input type="number" name="parameters_weight[]" placeholder="重量" value="" data-validation-message="请填写重量" maxlength="10" required />
+                            </td>
+                            <td class="am-text-middle">
+                                <a href="javascript:;" class="am-text-xs am-text-danger line-remove">移除</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <label>商品信息<span class="am-form-group-label-tips-must">必填</span></label>
+            <div class="parameters-container am-margin-top-sm">
+                <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm parameters-table table-thead-beautify am-margin-bottom-0">
+                    <thead>
+                        <tr>
+                            <th class="spec-quick-th-title" style="width:23%">商品名</th>
+                            <th class="spec-quick-th-title" style="width:23%">规格</th>
+                            <th class="spec-quick-th-title" style="width:23%">SKU码</th>
+                            <th class="spec-quick-th-title" style="width:23%">数量</th>
+                            <th class="spec-quick-th-value">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+						    <td class="am-text-middle">
+                                <select name="goods_id[]" class="am-radius  selection-form-goods" data-placeholder="请选择..." data-validation-message="请选择商品" onchange="javascript:getSkuVal(this)">
+                                    <option value="0">请选择...</option>
+                                    {{foreach $goods_publish_list as $v}}
+                                        <option value="{{$v.goods_id}}" >{{$v.title}}</option>
+                                    {{/foreach}}
+                                </select>
+                            </td>
+                            <td class="am-text-middle">
+                                <select name="spec" class="am-radius  selection-form-goods" data-placeholder="请选择..." data-validation-message="请选择商品规格" onchange="javascript:setSkuVal(this)">
+                                    <option value="0">请选择...</option>
+                                </select>                        
+                            </td>
+                            <td class="am-text-middle">
+                                <input type="text" readonly name="parameters_sku[]" placeholder="sku码" value="" maxlength="12" required />
+                            </td>
+                            <td class="am-text-middle">
+                                <input type="number" name="parameters_cnt[]" placeholder="数量" value="" data-validation-message="请填写数量" maxlength="10" required />
+                            </td>
+                            <td class="am-text-middle">
+                                <a href="javascript:;" class="am-text-xs am-text-danger line-remove">移除</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="am-margin-top-sm">
+                <span class="business-operations-submit parameters-line-add" onclick="ParametersItemHtmlCreated(this);">+添加商品</span>
+            </div>
+        </div>
+        <div class="am-form-group am-form-group-refreshing am-margin-top-lg am-padding-left-0">
+            <button type="button" class="am-btn am-btn-primary am-radius btn-loading-example am-btn-sm am-btn-block" data-am-loading="{loadingText:'处理中...'}">保存</button>
+        </div>
+    </form>
+    <!-- form end -->
+</div>
+<!-- right content end  -->
+
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+<script type="text/javascript">
+    // 返回处理
+    function ViewModalBack(e)
+    {
+        if(e.code == 0)
+        {
+            $.AMUI.progress.done();
+            Prompt(e.msg, 'success');
+            setTimeout(function()
+            {
+                parent.location.reload();
+            }, 1500);
+        } else {
+            $('form.form-validation').find('button[type="submit"]').button('reset');
+            $.AMUI.progress.done();
+            Prompt(e.msg);
+        }
+    }
+    function getSkuVal(obj){
+        var goods_id = $(obj).val();
+        var url = $("#getSkuValUrl").val();
+        $.ajax({
+            url:url,
+            type:"post",
+            data: {"goods_id":goods_id},
+            dataType: 'json',
+            success: function(result){
+                var data = result.data;
+                if(data.length==0){
+                   $(obj).parent().next().next().children().val("");
+                   $(obj).parent().next().children().empty();
+                   $(obj).parent().next().children().attr("disabled","desabled");
+                }
+                $.each(data,function(n,item){
+                    if(n == 0){
+                        $(obj).parent().next().next().children().val(item.barcode);
+                    }
+                    if(item.value == null){
+                        $(obj).parent().next().children().attr("disabled","desabled");
+                        $(obj).parent().next().children().empty();
+                    }else{
+                        if(n == 0){
+                            $(obj).parent().next().children().removeAttr("disabled");
+                            $(obj).parent().next().children().empty();
+                            $(obj).parent().next().children().append("<option value=\"0\">请选择...</option>");
+                            $(obj).parent().next().children().append("<option value=" + item.id +"-"+ item.barcode + " selected>" + item.value + "</option>");
+                        }else{
+                            $(obj).parent().next().children().append("<option value=" + item.id  +"-"+ item.barcode + ">" + item.value + "</option>");
+                        }
+                    }
+                });
+                
+            },        
+        });    
+    }
+    function setSkuVal(obj){
+        var val = $(obj).val();
+        var arr = val.split("-");
+        var sku = arr[1];
+        $(obj).parent().next().children().val(sku);
+    }
+	function boxRemove(obj){
+	    $(obj).parents(".am-form-group-add").remove();
+	}
+</script>

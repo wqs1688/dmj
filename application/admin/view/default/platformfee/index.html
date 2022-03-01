@@ -1,0 +1,50 @@
+<!-- 继承公共的 form -->
+{{extend name="public/module/form" /}}
+
+<!-- 表单顶部操作栏 -->
+{{block name="form_operate_top"}}
+    <button type="button" class="am-btn am-btn-secondary am-radius am-btn-xs am-icon-plus submit-add" data-am-modal="{target: '#data-save-win'}"> 新增</button>
+    <!-- 父级内容 -->
+    {__block__}
+{{/block}}
+
+<!-- 扩展 -->
+{{block name="form_extend"}}
+	<!-- save win start -->
+	<div class="am-popup am-radius" id="data-save-win">
+		<div class="am-popup-inner">
+			<div class="am-popup-hd">
+				<h4 class="am-popup-title" data-add-title="平台费用添加" data-edit-title="平台费用编辑">平台费用添加</h4>
+				<span data-am-modal-close class="am-close">&times;</span>
+			</div>
+			<div class="am-popup-bd">
+				<!-- form start -->
+				<form class="am-form form-validation" action="{{:MyUrl('admin/platformfee/Save')}}" method="POST" request-type="ajax-reload" request-value="">
+					<div class="am-form-group">
+						<label>名称</label>
+						<input type="text" placeholder="名称" name="name_zh" minlength="2" maxlength="16" data-validation-message="名称格式 2~16 个字符" class="am-radius" required />
+					</div>
+					<div class="am-form-group">
+						<label>费用（百分比的数值填入百分号前面的数字）</label>
+						<input type="number" placeholder="费用" name="value"  data-validation-message="费用格式有误" class="am-radius" required />
+					</div>
+					<div class="am-form-group">
+						<label>英文名称</label>
+						<input type="text" placeholder="英文名称" name="name_en" min="2" max="16" data-validation-message="名称格式 2~16 个字符" class="am-radius" required />
+					</div>
+					{{include file="lib/enable" /}}
+					<div class="am-form-group am-form-success">
+						<label>描述</label>
+						<textarea rows="3" maxlength="60" name="description" class="am-radius" placeholder="描述" data-validation-message="描述不能大于60个字符"></textarea>
+					</div>
+					<div class="am-form-group am-form-group-refreshing am-margin-top-lg am-padding-horizontal-0">
+						<input type="hidden" name="id" />
+						<button type="submit" class="am-btn am-btn-primary am-radius btn-loading-example am-btn-sm am-btn-block" data-am-loading="{loadingText:'处理中...'}">保存</button>
+					</div>
+				</form>
+				<!-- form end -->
+			</div>
+		</div>
+	</div>
+	<!-- save win end -->
+{{/block}}

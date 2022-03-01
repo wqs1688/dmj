@@ -1,0 +1,215 @@
+<?php
+// +----------------------------------------------------------------------
+// | DMJ
+// +----------------------------------------------------------------------
+// | Author: R
+// +----------------------------------------------------------------------
+namespace app\admin\form;
+
+use think\Db;
+use app\service\WarehouseService;
+use app\service\RegionService;
+
+/**
+ * 商品入库动态表格
+ * @author  R
+ * @version 1.0.0
+ * @date    2020-07-22
+ * @desc    description
+ */
+class Inbound
+{
+    // 基础条件
+    public $condition_base = [];
+
+    /**
+     * 入口
+     * @author  R
+     * @version 1.0.0
+     * @date    2021-07-22
+     * @desc    description
+     * @param   [array]           $params [输入参数]
+     */
+    public function Run($params = [])
+    {
+        return [
+            // 基础配置
+            'base' => [
+                'key_field'     => 'id',
+                'status_field'  => 'is_enable',
+                'is_search'     => 1,
+                'search_url'    => MyUrl('admin/inbound/index'),
+                // 'is_delete'     => 1,
+                // 'delete_url'    => MyUrl('admin/inbound/delete'),
+                'delete_key'    => 'ids',
+                'detail_title'  => '基础信息',
+            ],
+            // 表单配置
+            'form' => [
+                [
+                    'view_type'         => 'checkbox',
+                    'is_checked'        => 0,
+                    'checked_text'      => '反选',
+                    'not_checked_text'  => '全选',
+                    'align'             => 'center',
+                    'width'             => 80,
+                ],
+                [
+                    'label'         => '基础信息',
+                    'view_type'     => 'module',
+                    'view_key'      => 'inbound/module/goods',
+                    'grid_size'     => 'lg',
+                    'is_sort'       => 1,
+                    'sort_field'    => 'goods_id',
+                    'search_config' => [
+                        'form_type'             => 'input',
+                        'form_name'             => 'id',
+                        'where_type_custom'     => 'in',
+                        'where_value_custom'    => 'WhereGoodsInfo',
+                        'placeholder'           => '请输入商品名称/型号',
+                    ],
+                ],
+                [
+                    'label'         => '仓库',
+                    'view_type'     => 'field',
+                    'view_key'      => 'warehouse_name',
+                    'is_sort'       => 1,
+                    'search_config' => [
+                        'form_type'         => 'select',
+                        'form_name'         => 'warehouse_id',
+                        'data'              => $this->WarehouseList(),
+                        'data_key'          => 'id',
+                        'data_name'         => 'name',
+                        'where_type'        => 'in',
+                        'is_multiple'       => 1,
+                    ],
+                ],
+                [
+                    'label'         => '商品尺寸',
+                    'view_type'     => 'field',
+                    'view_key'      => 'goods_size_weight',
+                    'align'         => 'center',
+                    'is_sort'       => 1,
+                ],
+                [
+                    'label'         => '入库总量',
+                    'view_type'     => 'field',
+                    'view_key'      => 'goods_num',
+                    'is_sort'       => 1,
+                ],
+                [
+                    'label'         => '货源地址',
+                    'view_type'     => 'field',
+                    'view_key'      => 'source_address',
+                    'is_sort'       => 1,
+                    'search_config' => [
+                        'form_type'         => 'input',
+                        'form_name'         => 'source_address',
+                        'where_type'        => 'like',
+                        'placeholder'       => '请输入货源地址'
+                    ],
+                ],
+                [
+                    'label'         => '申请用户',
+                    'view_type'     => 'module',
+                    'view_key'      => 'lib/module/user',
+                    'grid_size'     => 'sm',
+                    'is_sort'       => 1,
+                    'search_config' => [
+                        'form_type'             => 'input',
+                        'form_name'             => 'user_id',
+                        'where_type_custom'     => 'in',
+                        'where_value_custom'    => 'WhereValueUserInfo',
+                        'placeholder'           => '请输入用户名/昵称/手机/邮箱',
+                    ],
+                ],
+                [
+                    'label'         => '状态',
+                    'view_type'     => 'field',
+                    'view_key'      => 'status',
+                    'view_data_key' => 'name',
+                    'view_data'     => lang('common_warehouse_status_list'),
+                    'is_sort'       => 1,
+                    'search_config' => [
+                        'form_type'         => 'select',
+                        'where_type'        => 'in',
+                        'data'              => lang('common_warehouse_status_list'),
+                        'data_key'          => 'id',
+                        'data_name'         => 'name',
+                        'is_multiple'       => 1,
+                    ],
+                ],
+                [
+                    'label'         => '创建时间',
+                    'view_type'     => 'field',
+                    'view_key'      => 'add_time',
+                    'is_sort'       => 1,
+                    'search_config' => [
+                        'form_type'         => 'datetime',
+                    ],
+                ],
+                [
+                    'label'         => '更新时间',
+                    'view_type'     => 'field',
+                    'view_key'      => 'upd_time',
+                    'is_sort'       => 1,
+                    'search_config' => [
+                        'form_type'         => 'datetime',
+                    ],
+                ],
+                [
+                    'label'         => '操作',
+                    'view_type'     => 'operate',
+                    'view_key'      => 'inbound/module/operate',
+                    'align'         => 'center',
+                    'fixed'         => 'right',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * 获取入库数据
+     * @author  R
+     * @version 1.0.0
+     * @date    2020-07-22
+     * @desc    description
+     */
+    public function WarehouseList()
+    {
+        $result = [];
+        $ids = array_unique(Db::name('GoodsWarehouse')->column('warehouse_id'));
+        if(!empty($ids))
+        {
+            $ret = WarehouseService::WarehouseIdsAllList($ids);
+            if($ret['code'] == 0)
+            {
+                $result = $ret['data'];
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * 商品信息条件处理
+     * @author  R
+     * @version 1.0.0
+     * @date    2021-07-22
+     * @desc    description
+     * @param   [string]          $value    [条件值]
+     * @param   [array]           $params   [输入参数]
+     */
+    public function WhereGoodsInfo($value, $params = [])
+    {
+        if(!empty($value))
+        {
+            // 获取关联的商品 id
+            $ids = Db::name('GoodsWarehouse')->alias('wg')->join(['__GOODS__'=>'g'], 'wg.goods_id=g.id')->where('g.title|g.model', 'like', '%'.$value.'%')->column('wg.id');
+
+            // 避免空条件造成无效的错觉
+            return empty($ids) ? [0] : $ids;
+        }
+        return $value;
+    }
+}
+?>

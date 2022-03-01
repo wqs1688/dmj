@@ -1,0 +1,494 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+	<div class="content">
+		<!-- form start -->
+		<form class="am-form form-validation view-save" action="{{:MyUrl('admin/goods/save')}}" method="POST" request-type="ajax-url" request-value="{{:MyUrl('admin/goods/index', $params).$lang_type}}" enctype="multipart/form-data">
+			<legend>
+				<span class="am-text-default">{{:lang("goods_info_text2")}}{{if empty($data['id'])}}{{:lang("goods_info_text3")}}{{else /}}{{:lang("goods_info_text4")}}{{/if}}</span>
+				<a href="{{:MyUrl('admin/goods/index', $params).$lang_type}}" class="am-fr am-text-sm am-margin-top-xs am-icon-mail-reply"> {{:lang("goods_info_text5")}}</a>
+			</legend>
+
+			<nav class="goods-nav">
+				<ul>
+					<li>
+						<a href="javascript:;" data-value="#goods-nav-base">{{:lang("goods_info_text6")}}</a>
+					</li>
+                    {{if $role_id == 1}}
+					<li>
+						<a href="javascript:;" data-value="#goods-nav-operations">{{:lang("goods_info_text7")}}</a>
+					</li>
+					<li>
+						<a href="javascript:;" data-value="#goods-nav-parameters">{{:lang("goods_info_text8")}}</a>
+					</li>
+                    {{/if}}
+					<li>
+						<a href="javascript:;" data-value="#goods-nav-photo">{{:lang("goods_info_text9")}}</a>
+					</li>
+					<li>
+						<a href="javascript:;" data-value="#goods-nav-video">{{:lang("goods_info_text10")}}</a>
+					</li>
+					<li>
+						<a href="javascript:;" data-value="#goods-nav-app">{{:lang("goods_info_text11")}}</a>
+					</li>
+					<li>
+						<a href="javascript:;" data-value="#goods-nav-web">{{:lang("goods_info_text12")}}</a>
+					</li>
+					<li>
+						<a href="javascript:;" data-value="#goods-nav-fictitious">{{:lang("goods_info_text13")}}</a>
+					</li>
+					<li>
+						<a href="javascript:;" data-value="#goods-nav-extends">{{:lang("goods_info_text14")}}</a>
+					</li>
+                    {{if $role_id == 1}}
+					<li>
+						<a href="javascript:;" data-value="#goods-nav-seo">SEO</a>
+					</li>
+                    {{/if}}
+					<li class="am-text-center am-padding-xs nav-shrink-submit">
+						<i class="am-icon-angle-double-right am-icon-sm"></i>
+					</li>
+				</ul>
+			</nav>
+
+			<!-- 基础信息 -->
+			<div class="am-panel am-panel-default" id="goods-nav-base">
+                <div class="am-panel-hd">
+                    <h3 class="am-panel-title">{{:lang("goods_info_text6")}}</h3>
+                </div>
+                <div class="am-panel-bd am-padding-vertical-xs">
+					<div class="am-form-group">
+						<label>{{:lang("goods_info_text15")}}<span class="am-form-group-label-tips-must">{{:lang("goods_info_text16")}}</span></label>
+						<div class="am-input-group am-input-group-sm">
+							<input type="hidden" name="title_color" value="{{if !empty($data['title_color'])}}{{$data.title_color}}{{/if}}" />
+                            <input type="hidden" id="getPriceUrl" value="{{:MyUrl('admin/goods/getPrice')}}" />
+							<input type="text" name="title" placeholder="{{:lang('goods_info_text15')}}" minlength="2" maxlength="160" data-validation-message="{{:lang('goods_info_text20')}}" class="am-form-field am-radius" {{if !empty($data)}} value="{{$data.title}}" {{/if}} {{if !empty($data['title_color'])}} style="color:{{$data.title_color}};" {{/if}} required />
+							<span class="am-input-group-btn">
+								<button type="button" class="am-btn am-btn-default am-btn-xs colorpicker-submit" data-input-tag="input[name='title']" data-color-tag="input[name='title_color']">
+									<img src="{{$attachment_host}}/static/common/images/colorpicker.png" />
+								</button>
+							</span>
+						</div>
+					</div>
+					<div class="am-form-group">
+						<label>{{:lang('goods_info_text17')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text18')}}</span></label>
+						<input type="text" name="simple_desc" placeholder="{{:lang('goods_info_text17')}}" maxlength="230" data-validation-message="{{:lang('goods_info_text19')}}" class="am-radius" {{if !empty($data)}} value="{{$data.simple_desc}}"{{/if}} />
+					</div>
+					<div class="am-form-group">
+						<label>{{:lang('goods_info_text21')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text18')}}</span></label>
+						<input type="text" name="model" placeholder="{{:lang('goods_info_text21')}}" maxlength="30" data-validation-message="{{:lang('goods_info_text22')}}" class="am-radius" {{if !empty($data)}} value="{{$data.model}}"{{/if}} />
+					</div>
+					<div class="am-form-group">
+						<label>{{:lang('goods_info_text23')}}<span class="am-form-group-label-tips-must">{{:lang('goods_info_text24')}}</span></label>
+						<br />
+						<select name="category_id" class="am-radius chosen-select" multiple="multiple" minchecked="1" data-placeholder="{{:lang('goods_info_text25')}}..." data-validation-message="{{:lang('goods_info_text26')}}" required>
+							{{if !empty($goods_category_list)}}
+								{{foreach $goods_category_list as $v}}
+									<option value="{{$v.id}}" {{if !empty($data['category_ids']) and in_array($v['id'], $data['category_ids'])}}selected{{/if}}>{{:lang('goods_info_text27')}} - {{$v.name}}</option>
+									{{if !empty($v['items'])}}
+										{{foreach $v.items as $vs}}
+											<option style="padding-left: 30px;" value="{{$vs.id}}" {{if !empty($data['category_ids']) and in_array($vs['id'], $data['category_ids'])}}selected{{/if}}>{{:lang('goods_info_text28')}}-{{$vs.name}}</option>
+											{{if !empty($vs['items'])}}
+												{{foreach $vs.items as $vss}}
+													<option style="padding-left: 60px;" value="{{$vss.id}}" {{if !empty($data['category_ids']) and in_array($vss['id'], $data['category_ids'])}}selected{{/if}}>{{:lang('goods_info_text29')}}-{{$vss.name}}</option>
+												{{/foreach}}
+											{{/if}}
+										{{/foreach}}
+									{{/if}}
+								{{/foreach}}
+							{{/if}}
+						</select>
+					</div>
+					<div class="am-form-group">
+						<label>{{:lang('goods_info_text1')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text30')}}</span></label>
+						<br />
+						<select name="brand_id" class="am-radius chosen-select" data-placeholder="{{:lang('goods_info_text25')}}..." data-validation-message="{{:lang('goods_info_text31')}}">
+							{{if !empty($brand_list)}}
+								<option value="0">{{:lang('goods_info_text25')}}...</option>
+								{{foreach $brand_list as $v}}
+									<option value="{{$v.id}}" {{if isset($data['brand_id']) and $data['brand_id'] eq $v['id']}}selected{{/if}}>{{$v.name}}</option>
+								{{/foreach}}
+							{{/if}}
+						</select>
+					</div>
+					<div class="am-form-group">
+						<label>{{:lang('goods_info_text32')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text30')}}</span></label>
+						<br />
+						<select name="place_origin" class="am-radius chosen-select" data-placeholder="{{:lang('goods_info_text25')}}..." data-validation-message="{{:lang('goods_info_text33')}}">
+							<option value="0">{{:lang('goods_info_text25')}}...</option>
+							{{if !empty($region_province_list)}}
+								{{foreach $region_province_list as $v}}
+									<option value="{{$v.id}}" {{if !empty($data['place_origin']) and $v['id'] eq $data['place_origin']}}selected{{/if}}>{{$v.name}}</option>
+								{{/foreach}}
+							{{/if}}
+						</select>
+					</div>
+					<div class="am-form-group">
+						<label>{{:lang('goods_info_text34')}}<span class="am-form-group-label-tips-must">{{:lang('goods_info_text16')}}</span></label>
+						<input type="text" name="inventory_unit" placeholder="{{:lang('goods_info_text34')}}" minlength="1" maxlength="6" data-validation-message="{{:lang('goods_info_text35')}}" class="am-radius" {{if !empty($data)}} value="{{$data.inventory_unit}}"{{/if}} required />
+					</div>
+					<div class="am-form-group">
+	                    <label>{{:lang('goods_info_text36')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text18')}}</span><span class="am-form-group-label-tips">{{:lang('goods_info_text38')}}</span></label>
+	                    <div class="am-input-group am-input-group-sm">
+	                        <input type="number" name="give_integral" placeholder="{{:lang('goods_info_text36')}}" min="0" max="100" data-validation-message="{{:lang('goods_info_text37')}}" class="am-form-field am-radius" {{if !empty($data['give_integral'])}} value="{{$data.give_integral}}"{{/if}} />
+	                        <span class="am-input-group-btn">
+	                            <button type="button" class="am-btn am-btn-default am-radius">%</button>
+	                        </span>
+	                    </div>
+	                </div>
+					<div class="am-form-group">
+						<label>{{:lang('goods_info_text39')}}<span class="am-form-group-label-tips-must">{{:lang('goods_info_text16')}}</span><span class="am-form-group-label-tips">{{:lang('goods_info_text40')}}</span></label>
+						<input type="number" name="buy_min_number" placeholder="{{:lang('goods_info_text39')}}" min="1" max="100000000" data-validation-message="{{:lang('goods_info_text39')}} 1~100000000" class="am-radius" value="{{if empty($data) or empty($data['buy_min_number'])}}1{{else /}}{{$data.buy_min_number}}{{/if}}" required />
+					</div>
+					<div class="am-form-group">
+						<label>{{:lang('goods_info_text41')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text18')}}</span><span class="am-form-group-label-tips">{{:lang('goods_info_text42')}}</span></label>
+						<input type="number" name="buy_max_number" placeholder="{{:lang('goods_info_text41')}}" min="0" max="100000000" data-validation-message="{{:lang('goods_info_text41')}} 1~100000000" class="am-radius" {{if !empty($data['buy_max_number'])}} value="{{$data.buy_max_number}}"{{/if}} />
+					</div>
+					<div class="am-form-group">
+						<label>{{:lang('goods_info_text43')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text30')}}</span></label>
+						<div class="am-alert am-alert-warning am-radius am-margin-top-0" data-am-alert>
+						    <p>1. {{:lang('goods_info_text44')}}[ <strong class="am-text-danger">{{$common_site_type_list[$common_site_type]['name']}}</strong> ]</p>
+						    <p>2. {{:lang('goods_info_text45')}}</p>
+						    <p>3. {{:lang('goods_info_text46')}}</p>
+						</div>
+						<select name="site_type" class="am-radius chosen-select am-margin-top-xs" data-placeholder="{{:lang('goods_info_text30')}}..." data-validation-message="{{:lang('goods_info_text47')}}">
+							<option value="-1">{{:lang('goods_info_text30')}}...</option>
+							{{if !empty($common_site_type_list)}}
+								{{foreach $common_site_type_list as $v}}
+									<option value="{{$v.value}}" {{if isset($data['site_type']) and $v['value'] eq $data['site_type']}}selected{{/if}}>{{$v.name}}</option>
+								{{/foreach}}
+							{{/if}}
+						</select>
+					</div>
+					<div class="am-form-group am-form-file">
+						<label class="block">{{:lang('goods_info_text48')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text49')}}</span><span class="am-form-group-label-tips">{{:lang('goods_info_text50')}}</span></label>
+						<ul class="plug-file-upload-view goods-recommended-images-view" data-form-name="images" data-max-number="1" data-dialog-type="images">
+							{{if !empty($data['images'])}}
+								<li>
+									<input type="text" name="images" value="{{$data.images}}" />
+									<img src="{{$data.images}}" />
+									<i>×</i>
+								</li>
+							{{/if}}
+						</ul>
+						<div class="plug-file-upload-submit" data-view-tag="ul.goods-recommended-images-view">+{{:lang('goods_info_text51')}}</div>
+					</div>
+					<div class="am-form-group">
+						<label class="block">{{:lang('goods_info_text52')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text30')}}</span><span class="am-form-group-label-tips">{{:lang('goods_info_text53')}}</span></label>
+						<input name="is_deduction_inventory" value="1" type="checkbox" data-off-text="{{:lang('goods_info_text54')}}" data-on-text="{{:lang('goods_info_text55')}}" data-size="xs" data-on-color="success" data-off-color="default" data-handle-width="50" data-am-switch {{if (isset($data['is_deduction_inventory']) and $data['is_deduction_inventory'] eq 1) or empty($data)}}checked="true"{{/if}} />
+					</div>
+					<div class="am-form-group">
+						<label class="block">{{:lang('goods_info_text56')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text30')}}</span><span class="am-form-group-label-tips">{{:lang('goods_info_text57')}}</span></label>
+						<input name="is_shelves" value="1" type="checkbox" data-off-text="{{:lang('goods_info_text58')}}" data-on-text="{{:lang('goods_info_text59')}}" data-size="xs" data-on-color="success" data-off-color="default" data-handle-width="50" data-am-switch {{if (isset($data['is_shelves']) and $data['is_shelves'] eq 1) or empty($data)}}checked="true"{{/if}} />
+					</div>
+				</div>
+			</div>
+            <div class="am-panel am-panel-default" id="goods-nav-operations" >
+                <div class="am-panel-hd">
+                    <h3 class="am-panel-title">{{:lang('goods_info_text60')}}<span class="am-form-group-label-tips-must">{{:lang('goods_info_text16')}}</span></h3>
+                </div>
+                <div class="am-panel-bd business-form-group">
+                    <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm parameters-table2 table-thead-beautify am-margin-bottom-0">
+                        <thead>
+                            <tr>
+                                <th class="spec-quick-th-title">{{:lang('goods_info_text61')}}（cm）</th>
+                                <th class="spec-quick-th-title">{{:lang('goods_info_text62')}}（cm）</th>
+                                <th class="spec-quick-th-title">{{:lang('goods_info_text63')}}（cm）</th>
+                                <th class="spec-quick-th-title">{{:lang('goods_info_text64')}}（kg）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="am-text-middle">
+                                    <input type="number" name="length" placeholder="{{:lang('goods_info_text61')}}" value="{{if !empty($data)}}{{$data.length}}{{/if}}" data-validation-message="{{:lang('goods_info_text65')}}" maxlength="10" required />
+                                </td>
+                                <td class="am-text-middle">
+                                    <input type="number" name="width" placeholder="{{:lang('goods_info_text62')}}" value="{{if !empty($data)}}{{$data.width}}{{/if}}" data-validation-message="{{:lang('goods_info_text66')}}" maxlength="10" required />
+                                </td>
+                                <td class="am-text-middle">
+                                    <input type="number" name="height" placeholder="{{:lang('goods_info_text63')}}" value="{{if !empty($data)}}{{$data.height}}{{/if}}" maxlength="10" data-validation-message="{{:lang('goods_info_text67')}}" required />
+                                </td>
+                                <td class="am-text-middle">
+                                    <input type="number" name="weight" placeholder="{{:lang('goods_info_text64')}}" value="{{if !empty($data)}}{{$data.weight}}{{/if}}" data-validation-message="{{:lang('goods_info_text68')}}" maxlength="10" required />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="am-panel-hd">
+                    <h3 class="am-panel-title">{{:lang('goods_info_text69')}}<span class="am-form-group-label-tips-must">{{:lang('goods_info_text16')}}</span></h3>
+                </div>
+                <div class="am-panel-bd business-form-group" >
+                    <select name="express" onchange="getPrice(this);">
+                        {{foreach $expresslist as $v}}
+                            <option value="{{$v['id']}}" {{if $v['name'] eq $express}}selected{{/if}}>{{$v['name']}}</option>
+                        {{/foreach}}
+                    </select>
+                    <select name="expressPrice">
+                        <option value="">{{:lang('goods_info_text70')}}</option>
+                        {{foreach $expressPriceList as $val}}
+                            <option value="{{$val['name']}} {{$val['method_name']}}({{:lang('goods_info_text71')}}：{{$val['method_price']}})" {{if strpos($expressPrice,$val['method_price']) }}selected{{/if}}>{{$val['name']}} {{$val['method_name']}}({{:lang('goods_info_text71')}}：{{$val['method_price']}})</option>
+                        {{/foreach}}
+                    </select>
+                </div>
+            </div>    
+			<!-- 商品规格 -->
+            {{if $role_id == 1}}
+			<div class="am-panel am-panel-default" id="goods-nav-operations" data-spec-add-max-number="{{:MyC('common_spec_add_max_number', 3, true)}}">
+                <div class="am-panel-hd">
+                    <h3 class="am-panel-title">{{:lang('goods_info_text7')}}<span class="am-form-group-label-tips-must">{{:lang('goods_info_text16')}}</span></h3>
+                </div>
+                <div class="am-panel-bd business-form-group">
+                    <div class="am-margin-horizontal-sm">
+                    	{{include file="goods/spec" /}}
+                    </div>
+                </div>
+            </div>
+
+			<!-- 商品参数 -->
+            <div class="am-panel am-panel-default" id="goods-nav-parameters">
+                <div class="am-panel-hd">
+                    <h3 class="am-panel-title">{{:lang('goods_info_text8')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text18')}}</span></h3>
+                </div>
+                <div class="am-panel-bd business-form-group">
+                    <div class="am-margin-horizontal-sm">
+						{{include file="public/goodsparamstemplate/tips" /}}
+						<!-- 通过配置生成商品参数 -->
+						<div class="am-dropdown" id="parameters-quick-container" data-am-dropdown>
+							<span class="business-operations-submit am-dropdown-toggle parameters-quick-add">
+								<span>{{:lang('goods_info_text72')}}</span>
+								<i class="am-icon-caret-down"></i>
+							</span>
+							<div class="am-dropdown-content parameters-quick-config">
+								<div class="am-margin-bottom-sm">
+									<select class="am-radius chosen-select goods-template-params-select" data-placeholder="{{:lang('goods_info_text73')}}..." data-validation-message="选择商品参数模板">
+										{{if !empty($goods_template_list) and is_array($goods_template_list)}}
+											<option value="">{{:lang('goods_info_text73')}}...</option>
+											{{foreach $goods_template_list as $v}}
+												<option value="{{:urlencode(json_encode($v['config_data'], JSON_UNESCAPED_UNICODE))}}">{{$v.name}}</option>
+											{{/foreach}}
+										{{/if}}
+									</select>
+								</div>
+								<textarea rows="5" placeholder="{{:lang('goods_info_text74')}}"></textarea>
+								<button type="button" class="am-btn am-btn-secondary am-btn-xs am-radius am-btn-block am-margin-top-sm">{{:lang('goods_info_text75')}}</button>
+							</div>
+						</div>
+						<!-- 复制操作 -->
+						<span class="business-operations-submit am-margin-left-sm parameters-quick-copy">
+							<i class="am-icon-copy"></i>
+							<span>{{:lang('goods_info_text76')}}</span>
+						</span>
+					    <!-- 清空操作 -->
+					    <span class="business-operations-submit am-margin-left-sm parameters-quick-remove">
+							<i class="am-icon-times"></i>
+							<span>{{:lang('goods_info_text77')}}</span>
+						</span>
+
+						<!-- 参数表格 -->
+						{{include file="public/goodsparamstemplate/table" /}}
+					</div>
+                </div>
+            </div>
+            {{/if}}
+			<!-- 相册 -->
+			<div class="am-panel am-panel-default" id="goods-nav-photo">
+                <div class="am-panel-hd">
+                    <h3 class="am-panel-title">{{:lang('goods_info_text78')}}<span class="am-form-group-label-tips-must">{{:lang('goods_info_text80')}}</span></h3>
+                </div>
+                <div class="am-panel-bd business-form-group">
+                    <div class="am-margin-horizontal-sm">
+                    	<div class="am-alert am-alert-warning am-radius" data-am-alert>
+	                        <button type="button" class="am-close">&times;</button>
+	                        <p>{{:lang('goods_info_text79')}}</p>
+	                    </div>
+	                    <ul class="plug-file-upload-view goods-photo-view" data-form-name="photo[]" data-max-number="30" data-dialog-type="images">
+	                        {{if !empty($data['photo'])}}
+	                            {{foreach $data.photo as $v}}
+	                                <li>
+	                                    <input type="text" name="photo[]" value="{{$v.images_old}}" />
+	                                    <img src="{{$v.images}}" />
+	                                    <i>×</i>
+	                                </li>
+	                            {{/foreach}}
+	                        {{/if}}
+	                    </ul>
+	                    <div class="plug-file-upload-submit" data-view-tag="ul.goods-photo-view">+{{:lang('goods_info_text81')}}</div>
+                    </div>
+                </div>
+            </div>
+
+			<!-- 视频 -->
+            <div class="am-panel am-panel-default" id="goods-nav-video">
+                <div class="am-panel-hd">
+                    <h3 class="am-panel-title">{{:lang('goods_info_text10')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text83')}}</span></h3>
+                </div>
+                <div class="am-panel-bd business-form-group">
+                    <div class="am-margin-horizontal-sm">
+	                    <div class="am-alert am-alert-warning am-radius" data-am-alert>
+	                        <button type="button" class="am-close">&times;</button>
+	                        <p>{{:lang('goods_info_text84')}}</p>
+	                    </div>
+	                    <ul class="plug-file-upload-view plug-file-upload-view-video goods-video-view" data-form-name="video" data-max-number="1" data-dialog-type="video">
+	                        {{if !empty($data['video'])}}
+	                            <li>
+	                                <input type="text" name="video" value="{{$data.video}}" />
+	                                <video src="{{$data.video}}" controls>your browser does not support the video tag</video>
+	                                <i>×</i>
+	                            </li>
+	                        {{/if}}
+	                    </ul>
+	                    <div class="plug-file-upload-submit" data-view-tag="ul.goods-video-view">+{{:lang('goods_info_text85')}}</div>
+	                </div>
+                </div>
+            </div>
+
+			<!-- 手机详情 -->
+			<div class="am-panel am-panel-default" id="goods-nav-app">
+                <div class="am-panel-hd">
+                    <h3 class="am-panel-title">{{:lang('goods_info_text11')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text18')}}</span></h3>
+                </div>
+                <div class="am-panel-bd business-form-group">
+                    <div class="am-margin-horizontal-sm">
+                    	<div class="am-alert am-alert-warning am-radius" data-am-alert>
+	                        <button type="button" class="am-close">&times;</button>
+	                        <p>{{:lang('goods_info_text82')}}</p>
+	                    </div>
+						<ul class="content-app-items" data-max-count="10" data-required="1" data-images-name="content_app_images" data-content-name="content_app_text" data-images-text="{{:lang('goods_info_text86')}}" data-content-text="{{:lang('goods_info_text87')}}" data-delete-text="{{:lang('goods_info_text88')}}" data-drag-sort-text="{{:lang('goods_info_text89')}}">
+							{{if !empty($data['content_app'])}}
+								{{foreach $data.content_app as $v}}
+									<li>
+										<div>
+											<div class="content-app-left">
+												<label class="block">{{:lang('goods_info_text86')}}</label>
+												<ul class="plug-file-upload-view goods-content-app-images-view-{{$v.id}}" data-form-name="content_app_images_{{$v.id}}" data-max-number="1" data-dialog-type="images">
+													{{if !empty($v['images'])}}
+														<li>
+															<input type="text" name="content_app_images_{{$v.id}}" value="{{$v.images_old}}" />
+															<img src="{{$v.images}}" />
+															<i>×</i>
+														</li>
+													{{/if}}
+												</ul>
+												<div class="plug-file-upload-submit" data-view-tag="ul.goods-content-app-images-view-{{$v.id}}">+{{:lang('goods_info_text51')}}</div>
+											</div>
+											<div class="am-form-group content-app-right fr">
+												<label>{{:lang('goods_info_text87')}}</label>
+												<textarea rows="5" name="content_app_text_{{$v.id}}" maxlength="105000" class="am-radius" placeholder="{{:lang('goods_info_text87')}}" data-validation-message="{{:lang('goods_info_text90')}}">{{if !empty($v)}}{{$v.content_old|raw}}{{/if}}</textarea>
+											</div>
+										</div>
+										<i class="c-p am-text-xs cr-red content-app-items-rem-sub">{{:lang('goods_info_text88')}}</i>
+										<i class="c-m am-text-xs drag-sort-submit">{{:lang('goods_info_text89')}}</i>
+									</li>
+								{{/foreach}}
+							{{/if}}
+						</ul>
+						<span class="business-operations-submit content-app-items-add-sub">+{{:lang('goods_info_text91')}}</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- 电脑详情 -->
+			<div class="am-panel am-panel-default" id="goods-nav-web">
+                <div class="am-panel-hd">
+                    <h3 class="am-panel-title">{{:lang('goods_info_text12')}}<span class="am-form-group-label-tips-must">{{:lang('goods_info_text16')}}</span></h3>
+                </div>
+                <div class="am-panel-bd business-form-group">
+                	<div class="am-margin-horizontal-sm">
+                        <textarea class="am-radius am-validate" name="content_web" maxlength="105000" id="editor-tag" data-validation-message="{{:lang('goods_info_text92')}}电脑端详情内容最多 105000 个字符" style="width: 100%;">{{if !empty($data['content_web'])}}{{$data.content_web}}{{/if}}</textarea>
+                    </div>
+                </div>
+            </div>
+
+			<!-- 虚拟信息 -->
+            <div class="am-panel am-panel-default" id="goods-nav-fictitious">
+                <div class="am-panel-hd">
+                    <h3 class="am-panel-title">{{:lang('goods_info_text13')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text18')}}</span></h3>
+                </div>
+                <div class="am-panel-bd business-form-group">
+                	<div class="am-margin-horizontal-sm">
+                        <script type="text/plain" id="goods-fictitious-container" name="fictitious_goods_value">{{if !empty($data['fictitious_goods_value'])}}{{$data.fictitious_goods_value|raw}}{{/if}}</script>
+                    </div>
+                </div>
+            </div>
+
+			<!-- 扩展数据 -->
+            <div class="am-panel am-panel-default" id="goods-nav-extends">
+                <div class="am-panel-hd">
+                    <h3 class="am-panel-title">{{:lang('goods_info_text14')}}<span class="am-form-group-label-tips">{{:lang('goods_info_text92')}}</span></h3>
+                </div>
+                <div class="am-panel-bd business-form-group">
+                	<div class="am-margin-horizontal-sm">
+	                	<!-- 插件扩展数据 start -->
+						{{if isset($shopxo_is_develop) and $shopxo_is_develop eq true}}
+			                <div class="plugins-tag">
+			                    <span>plugins_view_admin_goods_save</span>
+			                </div>
+			            {{/if}}
+						{{if !empty($plugins_view_admin_goods_save_data) and is_array($plugins_view_admin_goods_save_data) and !empty(array_filter($plugins_view_admin_goods_save_data))}}
+							{{foreach $plugins_view_admin_goods_save_data as $hook}}
+			                    {{if is_string($hook) or is_int($hook)}}
+			                        {{$hook|raw}}
+			                    {{/if}}
+			                {{/foreach}}
+						{{else /}}
+							{{include file="public/not_data" /}}
+						{{/if}}
+						<!-- 插件扩展数据 end -->
+					</div>
+                </div>
+            </div>
+            {{if $role_id == 1}}
+            <!-- SEO信息 -->
+            <div class="am-panel am-panel-default" id="goods-nav-seo">
+                <div class="am-panel-hd">
+                    <h3 class="am-panel-title">SEO<span class="am-form-group-label-tips">{{:lang('goods_info_text18')}}</span></h3>
+                </div>
+                <div class="am-panel-bd am-padding-vertical-xs">
+                    {{include file="lib/seo" /}}
+                </div>
+            </div>
+            {{/if}}
+			<div class="am-form-group am-form-group-refreshing am-margin-top-lg am-padding-left-0">
+				<input type="hidden" name="id" {{if isset($data) and !empty($data['id']) and (!isset($is_copy) or $is_copy neq 1)}} value="{{$data.id}}"{{/if}} />
+				<button type="submit" class="am-btn am-btn-primary am-radius btn-loading-example am-btn-sm am-btn-block" data-am-loading="{loadingText:'{{:lang('admin_form_fields_text6')}}...'}">{{:lang('site_siteset_goods_text4')}}</button>
+			</div>
+		</form>
+        <!-- form end -->
+	</div>
+</div>
+<!-- right content end  -->
+
+<!-- 规格扩展数据弹层 -->
+{{include file="goods/spec_extends" /}}
+
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+<script type="text/javascript">
+// 规格扩展返回处理
+function SpecificationsExtendsBack(data)
+{
+	var $extends_popup = $('#specifications-extends-popup');
+    $('.specifications-table').find($extends_popup.attr('data-line-extend')).find('.line-extend-input').val(JSON.stringify(data));
+    $extends_popup.modal('close');
+}
+
+function getPrice(obj){
+    var express_id = $(obj).val();
+    var url = $("#getPriceUrl").val();
+    $.ajax({
+        url:url,
+        type:"post",
+        data: {"express_id":express_id},
+        dataType: 'json',
+        success: function(result){
+            $.each(result,function(n,item){
+                $(obj).next().append("<option value='"+item.name+" "+item.method_name+"(配送费："+item.method_price+")'>"+item.name+"  "+item.method_name+"(配送费："+item.method_price+"）</option>");
+            });
+        }
+    });
+}
+</script>

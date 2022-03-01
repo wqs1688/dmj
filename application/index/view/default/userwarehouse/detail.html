@@ -1,0 +1,73 @@
+<!-- 继承公共的 form -->
+{{extend name="public/module/detail" /}}
+
+<!-- 重写数据模块 -->
+{{block name="detail_data"}}
+
+    {{foreach $data['boxs'] as $val}}
+        <div class="am-form-group-add">
+            <label>外包装参数</label>
+            <!--表列表数据 -->
+            <div class="parameters-container am-margin-top-sm">
+                <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm parameters-table2 table-thead-beautify am-margin-bottom-0">
+                    <thead>
+                        <tr>
+                            <th class="spec-quick-th-title">长（cm）</th>
+                            <th class="spec-quick-th-title">宽（cm）</th>
+                            <th class="spec-quick-th-title">高（cm）</th>
+                            <th class="spec-quick-th-title">重量（kg）</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="am-text-middle">{{$val['box_length']}}</td>
+                            <td class="am-text-middle">{{$val['box_width']}}</td>
+                            <td class="am-text-middle">{{$val['box_height']}}</td>
+                            <td class="am-text-middle">{{$val['box_weight']}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <label>商品信息</label>
+            <div class="parameters-container am-margin-top-sm">
+                <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm parameters-table table-thead-beautify am-margin-bottom-0">
+                    <thead>
+                        <tr>
+                            <th class="spec-quick-th-title" style="width:23%">商品名</th>
+                            <th class="spec-quick-th-title" style="width:23%">规格</th>
+                            <th class="spec-quick-th-title" style="width:23%">SKU码</th>
+                            <th class="spec-quick-th-title" style="width:23%">数量</th>
+                        </tr>
+                    </thead>
+				    {{foreach $data["details"][$val['box_id']] as $v}}
+                    <tbody>
+                        <tr>
+					        <td class="am-text-middle">{{$v['title']}}</td>
+                            <td class="am-text-middle">{{$v['value']}}</td>
+                            <td class="am-text-middle">{{$v['good_sku']}} </td>
+                            <td class="am-text-middle">{{$v['good_num']}}</td>
+                        </tr>
+                    </tbody>
+				    {{/foreach}}
+                </table>
+            </div>
+    {{/foreach}}
+    
+    <!-- 核查结果 -->
+    <div class="am-panel am-panel-default">
+        <div class="am-panel-hd">核查结果</div>
+        <div class="am-panel-bd">
+            {{$data['check_info']}}
+        </div>
+        <div class="am-panel-hd">
+            <h3 class="am-panel-title">快递费用</h3>
+        </div>
+        <div class="am-panel-bd am-padding-vertical-xs">
+        　　　　{{if empty($expressName)}}
+            <span>待平台侧根据商品外包装尺寸确认具体快递</span>
+            {{else}}
+            <span>{{$expressName}}</span>
+            {{/if}}
+        </div>
+    </div>
+{{/block}}

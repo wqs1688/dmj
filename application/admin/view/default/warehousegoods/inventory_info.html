@@ -1,0 +1,107 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+    <div class="content">
+        {{if !empty($data['spec'])}}
+            <!-- form start -->
+            <form class="am-form form-validation" action="{{:MyUrl('admin/warehousegoods/inventorysave')}}" method="POST" request-type="ajax-fun" request-value="ViewModalBack">
+                <div class="am-alert am-alert-warning am-radius" data-am-alert>
+                    <button type="button" class="am-close">&times;</button>
+					{{if $city_name == '日本'}}
+                        <p>注意：</p>
+                        <p>总库存大于 20 件时，公开件数不能少于 20 件！！</p>
+					{{/if}}
+                </div>
+                <table class="am-table am-table-striped am-table-hover form-inventory-container">
+                    <thead>
+                        <tr>
+                            <th>{{:lang('warehousegoods_inventory_text1')}}</th>
+                            <th>
+                                <span>{{:lang('warehousegoods_inventory_text2')}}</span>
+                                <!-- 批量设置 -->
+                                <div class="am-dropdown" id="inventory-dropdown" data-am-dropdown>
+                                    <a href="javascript:;" class="am-icon-edit am-dropdown-toggle"></a>
+                                    <div class="am-dropdown-content">
+                                        <div class="am-input-group am-input-group-sm">
+                                            <input type="text" class="am-form-field" placeholder="{{:lang('warehousegoods_inventory_text5')}}" />
+                                            <span class="am-input-group-btn">
+                                                <button type="button" class="am-btn am-btn-default inventory-all-submit">{{:lang('warehousegoods_inventory_text3')}}</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+							{{if $city_name == '日本'}}
+                            <th>私有数量</th>
+							{{/if}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{foreach $data.spec as $v}}
+                            <tr>
+                                <td>{{$v.name}}</td>
+                                <td>
+                                    <input type="number" name="specifications_inventory[]" value="{{if !empty($v['inventory'])}}{{$v.inventory}}{{/if}}" placeholder="{{:lang('warehousegoods_inventory_text2')}}" class="am-radius" min="0" max="100000000" pattern="^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$" data-validation-message="库存数量 0~100000000" />
+                                    <input type="hidden" name="specifications_md5_key[]" value="{{$v.md5_key}}" />
+                                    <input type="hidden" name="specifications_spec[]" value="{{$v.spec}}" />
+                                </td>
+								{{if $city_name == '日本'}}
+                                <td>
+                                    <input type="number" name="specifications_inventory_private[]" 
+                                    value="{{if !empty($v['inventory_private'])}}{{$v.inventory_private}}{{/if}}" 
+                                    placeholder="私有数量" class="am-radius" min="0" max="{{if !empty($v['inventory'])}}{{$v.inventory}}{{/if}}" />
+                                </td>
+								{{/if}}
+                            </tr>
+                        {{/foreach}}
+                    </tbody>
+                </table>
+                <div class="form-inventory-submit">
+                    <input type="hidden" name="id" {{if !empty($data['data'])}} value="{{$data.data.id}}"{{/if}} />
+                    <button type="submit" class="am-btn am-btn-primary am-radius btn-loading-example am-btn-sm am-btn-block" data-am-loading="{loadingText:'{{:lang('admin_form_fields_text6')}}...'}">{{:lang('site_siteset_goods_text4')}}</button>
+                </div>
+            </form>
+            <!-- form end -->
+        {{else /}}
+            <div class="table-no"><i class="am-icon-warning"></i> {{:lang('warehousegoods_inventory_text4')}}</div>
+        {{/if}}
+    </div>
+</div>
+<!-- right content end  -->
+
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+<script type="text/javascript">
+// 返回处理
+function ViewModalBack(e)
+{
+    $(function()
+    {
+        if(e.code == 0)
+        {
+            $.AMUI.progress.done();
+            Prompt(e.msg, 'success');
+            setTimeout(function()
+            {
+                // 关闭弹窗、仅关闭窗口后列表数据不更新
+                // $(window.parent.document).find('.warehouse-goods-popup .am-close').trigger('click');
+
+                // 刷新页面、刷新页面列表数据重新加载
+                if(self.frameElement && self.frameElement.tagName == "IFRAME")
+                {
+                    parent.location.reload();
+                } else {
+                    window.location.reload();
+                }
+            }, 1500);
+        } else {
+            $('form.form-validation').find('button[type="submit"]').button('reset');
+            $.AMUI.progress.done();
+            Prompt(e.msg);
+        }
+    });
+}
+</script>

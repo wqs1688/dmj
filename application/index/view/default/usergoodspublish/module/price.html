@@ -1,0 +1,9 @@
+<!-- 分销价格 -->
+{{if !empty($module_data)}}
+    <div class="am-nbfc">
+        <p>原  价：{{$module_data.price_container.original_price}}</p>
+		<p>运  费：{{$module_data.price_container.price}}</p>
+		<p>出库费：150</p>
+		<p>手续费(5%)：{{$module_data.price_container.price}}</p>
+    </div>
+{{/if}}

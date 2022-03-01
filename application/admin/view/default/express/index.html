@@ -1,0 +1,111 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+	<div class="content">
+        <!-- operation start -->
+        <div class="am-g">
+            <button class="am-btn am-btn-secondary am-radius am-btn-xs am-icon-plus tree-submit-add" data-am-modal="{target: '#data-save-win'}"> 新增</button>
+        </div>
+        <!-- operation end -->
+
+        <!-- save win start -->
+        <div class="am-popup am-radius" id="data-save-win">
+			<div class="am-popup-inner">
+				<div class="am-popup-hd">
+					<h4 class="am-popup-title" data-add-title="快递添加" data-edit-title="快递编辑">快递添加</h4>
+					<span data-am-modal-close class="am-close">&times;</span>
+				</div>
+				<div class="am-popup-bd">
+					<!-- form start -->
+					<form class="am-form form-validation admin-save" action="{{:MyUrl('admin/express/save')}}" method="POST" request-type="ajax-fun" request-value="TreeFormSaveBack">
+						<div class="am-form-group am-form-file">
+							<label class="block">icon图标</label>
+							<ul class="plug-file-upload-view express-icon-images-view" data-form-name="icon" data-max-number="1" data-dialog-type="images">
+								<li>
+									<input type="hidden" name="icon" value="" />
+									<img src="{{$attachment_host}}/static/admin/default/images/default-images.jpg" />
+									<i>×</i>
+								</li>
+							</ul>
+							<div class="plug-file-upload-submit" data-view-tag="ul.express-icon-images-view">+上传图片</div>
+						</div>
+						<div class="am-form-group">
+							<label>配送公司</label>
+							<input type="text" placeholder="配送公司名称" name="name" minlength="2" maxlength="30" data-validation-message="名称格式 2~16 个字符" class="am-radius" required />
+						</div>
+                        {{include file="lib/region_linkage" /}}
+						<div class="am-form-group">
+                            <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm parameters-table table-thead-beautify am-margin-bottom-0">
+                                <thead>
+                                    <tr>
+                                        <th class="spec-quick-th-title" style="width:23%">配送方法</th>
+                                        <th class="spec-quick-th-title" style="width:23%">配送金额</th>
+                                        <th class="spec-quick-th-value">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="am-text-middle">
+                                            <input type="text" placeholder="配送方法" name="method[]" minlength="2" maxlength="16" data-validation-message="名称格式 2~16 个字符" class="am-radius" required />
+                                        </td>
+                                        <td class="am-text-middle">
+                                            <input type="number" name="price[]" placeholder="运费" value="" data-validation-message="请填运费金额" maxlength="6" required />
+                                        </td>
+                                        <td class="am-text-middle">
+                                            <span class="am-text-xs cr-blue c-p am-margin-right-sm line-move" data-type="top">上移</span>
+                                            <span class="am-text-xs cr-blue c-p am-margin-right-sm line-move" data-type="bottom">下移</span>
+                                            <span class="am-text-xs cr-red c-p line-remove">移除</span></td>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="am-margin-top-sm">
+                            <span class="business-operations-submit express-line-add">+添加配送方法</span>
+                        </div>
+						<div class="am-form-group">
+							<label>顺序</label>
+							<input type="number" placeholder="顺序" name="sort" min="0" max="255" data-validation-message="顺序 0~255 之间的数值" class="am-radius" value="0" required />
+						</div>
+						{{include file="lib/enable" /}}
+						<div class="am-form-group am-form-group-refreshing am-margin-top-lg am-padding-left-0">
+							<input type="hidden" name="id" />
+							<button type="submit" class="am-btn am-btn-primary am-radius btn-loading-example am-btn-sm am-btn-block" data-am-loading="{loadingText:'处理中...'}">保存</button>
+						</div>
+					</form>
+					<!-- form end -->
+				</div>
+			</div>
+		</div>
+		<!-- save win end -->
+
+        <!-- list start -->
+		<div id="tree" class="am-margin-top-sm" data-additional='[{"field":"icon", "value":"", "type":"input"}, {"field":"icon", "value":"{{$attachment_host}}/static/admin/default/images/default-images.jpg", "type":"attr", "tag":"ul.express-icon-images-view li img", "style":"src"}]' data-node-url="{{:MyUrl('admin/express/getnodeson')}}" data-del-url="{{:MyUrl('admin/express/delete')}}" data-popup-tag="#data-save-win">
+			{{include file="public/loading" /}}
+		</div>
+		<!-- list end -->
+	</div>
+</div>
+<!-- right content end  -->
+		
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+<script type="text/javascript">
+	// 初始化
+	Tree(0, $('#tree').data('node-url'), 0);
+
+	// 回调处理
+	function TreeFormSaveBack(e)
+	{
+		TreeFormSaveBackHandle(e);
+	}
+    $('.express-line-add').on('click', function()
+    {
+        // 追加内容
+        var html='<tr><td class="am-text-middle"><input type="text" placeholder="配送方法" name="method[]" minlength="2" maxlength="16" data-validation-message="名称格式 2~16 个字符" class="am-radius" required /></td><td class="am-text-middle"><input type="number" name="price[]" placeholder="运费" value="" data-validation-message="请填运费金额" maxlength="6" required /></td><td class="am-text-middle"><span class="am-text-xs cr-blue c-p am-margin-right-sm line-move" data-type="top">上移</span><span class="am-text-xs cr-blue c-p am-margin-right-sm line-move" data-type="bottom">下移</span><span class="am-text-xs cr-red c-p line-remove">移除</span></td></td></tr>';
+        $(".parameters-table").append(html);
+    });
+</script>

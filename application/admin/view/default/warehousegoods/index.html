@@ -1,0 +1,68 @@
+<!-- 继承公共的 form -->
+{{extend name="public/module/form" /}}
+
+<!-- 表单顶部操作栏 -->
+{{block name="form_operate_top"}}
+    <button type="button" class="am-btn am-btn-secondary am-radius am-btn-xs am-icon-plus add-goods-submit"> {{:lang('warehousegoods_index_text1')}}</button>
+    <!-- 父级内容 -->
+    {__block__}
+{{/block}}
+
+<!-- 公共代码 -->
+{{block name="form_page_bottom"}}
+    <!-- 商品添加弹窗 -->
+    <div class="am-popup" id="warehouse-goods-popup">
+        <div class="am-popup-inner">
+            <div class="am-popup-hd">
+                <h4 class="am-popup-title">{{:lang('warehousegoods_index_text2')}}</h4>
+                <span class="am-icon-arrows-alt am-full"></span>
+                <span data-am-modal-close class="am-close">&times;</span>
+            </div>
+            <div class="am-popup-bd am-padding-0">
+                <form class="am-form am-padding-sm goods-add-container">
+                    <!-- 搜索 -->
+                    <div class="forth-selection-container" data-search-url="{{:MyUrl('admin/warehousegoods/goodssearch')}}">
+                        <select class="am-radius chosen-select forth-selection-form-warehouse" data-placeholder="{{:lang('warehousegoods_index_text3')}}..." data-validation-message="请选择仓库">
+                            <option value="">{{:lang('warehousegoods_index_text3')}}...</option>
+                            {{if !empty($warehouse_list)}}
+                                {{foreach $warehouse_list as $v}}
+                                    <option value="{{$v.id}}">{{$v.name}}</option>
+                                {{/foreach}}
+                            {{/if}}
+                        </select>
+                        <select class="am-radius chosen-select forth-selection-form-category" data-placeholder="{{:lang('warehousegoods_index_text4')}}..." data-validation-message="请选择商品分类">
+                            <option value="">{{:lang('warehousegoods_index_text4')}}...</option>
+                            {{if !empty($goods_category_list)}}
+                                {{foreach $goods_category_list as $v}}
+                                    <option value="{{$v.id}}">{{:lang('warehousegoods_index_text5')}} - {{$v.name}}</option>
+                                    {{if !empty($v['items'])}}
+                                        {{foreach $v.items as $vs}}
+                                            <option style="padding-left: 15px;" value="{{$vs.id}}">{{:lang('warehousegoods_index_text6')}} - {{$vs.name}}</option>
+                                            {{if !empty($vs['items'])}}
+                                                {{foreach $vs.items as $vss}}
+                                                    <option style="padding-left: 30px;" value="{{$vss.id}}">{{:lang('warehousegoods_index_text7')}} - {{$vss.name}}</option>
+                                                {{/foreach}}
+                                            {{/if}}
+                                        {{/foreach}}
+                                    {{/if}}
+                                {{/foreach}}
+                            {{/if}}
+                        </select>
+                        <input type="text" placeholder="{{:lang('warehousegoods_index_text8')}}" class="am-radius forth-selection-form-keywords" />
+                        <button type="button" class="am-btn am-btn-secondary am-radius am-btn-sm am-icon-search search-submit" data-am-loading="{loadingText: ' 搜索中...'}"> {{:lang('form_operate_text3')}}</button>
+                    </div>
+
+                    <!-- 商品列表 -->
+                    <div class="am-scrollable-vertical am-margin-top-sm am-padding-bottom-xs goods-list-container" data-loading-msg="搜索中..." data-add-url="{{:MyUrl('admin/warehousegoods/goodsadd')}}" data-del-url="{{:MyUrl('admin/warehousegoods/goodsdel')}}">
+                        <ul class="am-gallery am-avg-sm-3 am-avg-md-4 am-avg-lg-5 am-gallery-bordered">
+                            <div class="table-no"><i class="am-icon-warning"></i> {{:lang('warehousegoods_index_text9')}}</div>
+                        </ul>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="am-margin-top-sm am-text-center goods-page-container"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+{{/block}}

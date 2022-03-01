@@ -1,0 +1,48 @@
+<!-- 操作栏 -->
+<button type="button" class="am-btn am-btn-default am-btn-xs am-radius am-btn-block submit-popup" data-url="{{:MyUrl('admin/order/detail', ['id'=>$module_data['id']]).$lang_type}}">
+    <i class="am-icon-eye"></i>
+    <span>{{:lang('order_operate_text1')}}</span>
+</button>
+{{if in_array($module_data['status'], [0])}}
+    <button type="button" class="am-btn am-btn-primary am-btn-xs am-radius am-btn-block submit-ajax" data-url="{{:MyUrl('admin/order/confirm').$lang_type}}" data-id="{{$module_data.id}}" data-value="{{$module_data.user_id}}" data-view="reload" data-msg="{{:lang('order_operate_text11')}}！" data-title="{{:lang('order_operate_text13')}}" data-cancel="{{:lang('order_operate_text14')}}" data-sure="{{:lang('order_operate_text15')}}">
+        <i class="am-icon-check-circle-o"></i>
+        <span>{{:lang('order_operate_text2')}}</span>
+    </button>
+{{/if}}
+{{if in_array($module_data['status'], [0,1])}}
+    <button type="button" class="am-btn am-btn-warning am-btn-xs am-radius am-btn-block submit-ajax" data-url="{{:MyUrl('admin/order/cancel')}}" data-id="{{$module_data.id}}" data-value="{{$module_data.user_id}}" data-view="reload" data-msg="{{:lang('order_operate_text12')}}？" data-title="{{:lang('order_operate_text13')}}" data-cancel="{{:lang('order_operate_text14')}}" data-sure="{{:lang('order_operate_text15')}}">
+        <i class="am-icon-paint-brush"></i>
+        <span>{{:lang('order_operate_text3')}}</span>
+    </button>
+    {{if in_array($module_data['status'], [1])}}
+        <button type="button" class="am-btn am-btn-success am-btn-xs am-radius am-btn-block submit-pay" data-id="{{$module_data.id}}" data-payment-id="{{$module_data.payment_id}}" data-am-modal="{target: '#order-pay-popup'}">
+            <i class="am-icon-paypal"></i>
+            <span>{{:lang('order_operate_text4')}}</span>
+        </button>
+    {{/if}}
+{{/if}}
+{{if $module_data['status'] eq 2}}
+    {{if $module_data['order_model'] eq 2}}
+        <button type="button" class="am-btn am-btn-secondary am-btn-xs am-radius am-btn-block submit-take" data-id="{{$module_data.id}}" data-user-id="{{$module_data.user_id}}" data-am-modal="{target: '#order-take-modal', closeViaDimmer: 0, width: 200, height: 160}">
+            <i class="am-icon-check"></i>
+            <span>{{:lang('order_operate_text5')}}</span>
+        </button>
+    {{else /}}
+       <button type="button" class="am-btn am-btn-secondary am-btn-xs am-radius am-btn-block submit-delivery" data-url="{{:MyUrl('admin/order/delivery').$lang_type}}" data-id="{{$module_data.id}}" data-user-id="{{$module_data.user_id}}" data-express-id="{{$module_data.express_id}}" data-am-modal="{target: '#order-delivery-popup'}">
+            <i class="am-icon-send-o"></i>
+            <span>{{:lang('order_operate_text6')}}</span>
+        </button>
+    {{/if}}
+{{/if}}
+{{if $module_data['status'] eq 3}}
+    <button type="button" class="am-btn am-btn-success am-btn-xs am-radius am-btn-block submit-ajax" data-url="{{:MyUrl('admin/order/collect').$lang_type}}" data-id="{{$module_data.id}}" data-value="{{$module_data.user_id}}" data-view="reload" data-msg="{{:lang('order_operate_text9')}}！" data-title="{{:lang('order_operate_text13')}}" data-cancel="{{:lang('order_operate_text14')}}" data-sure="{{:lang('order_operate_text15')}}">
+        <i class="am-icon-check-circle-o"></i>
+        <span>{{:lang('order_operate_text7')}}</span>
+    </button>
+{{/if}}
+{{if in_array($module_data['status'], [5,6])}}
+    <button type="button" class="am-btn am-btn-danger am-btn-xs am-radius am-btn-block submit-ajax" data-url="{{:MyUrl('admin/order/delete').$lang_type}}" data-id="{{$module_data.id}}" data-value="{{$module_data.user_id}}" data-view="delete" data-msg="{{:lang('order_operate_text10')}}？" data-title="{{:lang('order_operate_text13')}}" data-cancel="{{:lang('order_operate_text14')}}" data-sure="{{:lang('order_operate_text15')}}">
+        <i class="am-icon-trash-o"></i>
+        <span>{{:lang('order_operate_text8')}}</span>
+    </button>
+{{/if}}

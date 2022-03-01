@@ -1,0 +1,13 @@
+<ul class="am-nav am-nav-pills table-nav second-nav">
+	<li {{if $nav_type eq 'sms'}}class="am-active"{{/if}} data-type="sms">
+		<a href="{{:MyUrl('admin/sms/index', ['type'=>'sms']).$lang_type}}">{{:lang('sms_nav_text1')}}</a>
+	</li>
+	<li {{if $nav_type eq 'message'}}class="am-active"{{/if}} data-type="message">
+		<a href="{{:MyUrl('admin/sms/index', ['type'=>'message']).$lang_type}}">{{:lang('sms_nav_text2')}}</a>
+	</li>
+</ul>
+
+<div class="am-alert am-alert-warning am-radius am-margin-bottom-0" data-am-alert>
+    <button type="button" class="am-close">&times;</button>
+    <p class="am-text-xs">{{:lang('sms_nav_text3')}} <a href="https://www.aliyun.com/acts/alicomcloud/new-discount?userCode=iub0dy6g" class="am-margin-left-sm" target="_blank">{{:lang('sms_nav_text4')}} <i class="am-icon-external-link"></i></a> </p>
+</div>

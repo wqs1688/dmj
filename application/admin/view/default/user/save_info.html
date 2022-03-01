@@ -1,0 +1,149 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+	<div class="content">
+		<!-- form start -->
+		<form class="am-form form-validation view-save" action="{{:MyUrl('admin/user/save')}}" method="POST" request-type="ajax-url" request-value="{{:MyUrl('admin/user/index', $params)}}">
+			<legend>
+				<span class="am-text-default">{{:lang('user_save_text1')}}{{if empty($data['id'])}}{{:lang('user_save_text2')}}{{else /}}{{:lang('user_save_text3')}}{{/if}}</span>
+				<a href="{{:MyUrl('admin/user/index', $params)}}" class="am-fr am-text-sm am-margin-top-xs am-icon-mail-reply"> {{:lang('user_save_text4')}}</a>
+			</legend>
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text5')}}</label>
+				<input type="text" name="username" class="am-radius" placeholder="{{:lang('user_save_text5')}}" data-validation-message="{{:lang('user_save_text6')}}" {{if !empty($data)}} value="{{$data.username}}"{{/if}} />
+			</div>
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text7')}}</label>
+				<input type="text" name="nickname" class="am-radius" placeholder="{{:lang('user_save_text7')}}" data-validation-message="{{:lang('user_save_text8')}}" {{if !empty($data)}} value="{{$data.nickname}}"{{/if}} />
+			</div>
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text9')}}</label>
+				<input type="text" name="wechat" class="am-radius" placeholder="{{:lang('user_save_text9')}}" {{if !empty($data)}} value="{{$data.wechat}}"{{/if}} />
+			</div>
+
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text10')}}</label>
+				<input type="text" name="mobile" class="am-radius" placeholder="{{:lang('user_save_text10')}}" pattern="{{:lang('common_regex_mobile')}}" data-validation-message="手机号码格式错误" {{if !empty($data)}} value="{{$data.mobile}}"{{/if}} />
+			</div>
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text11')}}</label>
+				<input type="email" name="email" class="am-radius" placeholder="{{:lang('user_save_text11')}}" data-validation-message="{{:lang('user_save_text12')}}" {{if !empty($data)}} value="{{$data.email}}"{{/if}} />
+			</div>
+
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text13')}}</label>
+				<input type="text" name="alipay_openid" class="am-radius" placeholder="{{:lang('user_save_text13')}}" data-validation-message="{{:lang('user_save_text14')}}" {{if !empty($data)}} value="{{$data.alipay_openid}}"{{/if}} />
+			</div>
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text15')}}</label>
+				<input type="text" name="baidu_openid" class="am-radius" placeholder="{{:lang('user_save_text15')}}" data-validation-message="{{:lang('user_save_text16')}}" {{if !empty($data)}} value="{{$data.baidu_openid}}"{{/if}} />
+			</div>
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text17')}}</label>
+				<input type="text" name="toutiao_openid" class="am-radius" placeholder="{{:lang('user_save_text17')}}" data-validation-message="{{:lang('user_save_text18')}}" {{if !empty($data)}} value="{{$data.toutiao_openid}}"{{/if}} />
+			</div>
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text19')}}</label>
+				<input type="text" name="qq_openid" class="am-radius" placeholder="{{:lang('user_save_text19')}}" data-validation-message="{{:lang('user_save_text20')}}" {{if !empty($data)}} value="{{$data.qq_openid}}"{{/if}} />
+			</div>
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text21')}}</label>
+				<input type="text" name="qq_unionid" class="am-radius" placeholder="{{:lang('user_save_text21')}}" data-validation-message="{{:lang('user_save_text22')}}" {{if !empty($data)}} value="{{$data.qq_unionid}}"{{/if}} />
+			</div>
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text23')}}</label>
+				<input type="text" name="weixin_openid" class="am-radius" placeholder="{{:lang('user_save_text23')}}" data-validation-message="{{:lang('user_save_text24')}}" {{if !empty($data)}} value="{{$data.weixin_openid}}"{{/if}} />
+			</div>
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text24')}}</label>
+				<input type="text" name="weixin_unionid" class="am-radius" placeholder="{{:lang('user_save_text25')}}" data-validation-message="{{:lang('user_save_text25')}}" {{if !empty($data)}} value="{{$data.weixin_unionid}}"{{/if}} />
+			</div>
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text26')}}</label>
+				<input type="text" name="weixin_web_openid" class="am-radius" placeholder="{{:lang('user_save_text27')}}" data-validation-message="{{:lang('user_save_text2')}}" {{if !empty($data)}} value="{{$data.weixin_web_openid}}"{{/if}} />
+			</div>
+
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text28')}}</label>
+				<input type="text" name="birthday" class="am-radius Wdate" placeholder="{{:lang('user_save_text28')}}" pattern="{{:lang('common_regex_date')}}" data-validation-message="{{:lang('user_save_text29')}}" {{if !empty($data)}} value="{{$data.birthday_text}}" {{/if}} onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM-dd'})" />
+			</div>
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text30')}}</label>
+				<input type="text" placeholder="{{:lang('user_save_text30')}}" name="address" data-validation-message="{{:lang('user_save_text31')}}" class="am-radius" {{if !empty($data)}} value="{{$data.address}}"{{/if}} />
+			</div>
+			{{include file="lib/gender" /}}
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text32')}}</label>
+				<input type="number" placeholder="{{:lang('user_save_text32')}}" name="integral" data-validation-message="详细地址2~60 个字符" class="am-radius" {{if !empty($data)}} value="{{$data.integral}}"{{/if}} />
+			</div>
+
+			{{include file="lib/user_status" /}}
+
+            <div class="am-form-group">
+                <label>{{:lang('user_save_text33')}}</label>
+                <input type="number" placeholder="{{:lang('user_save_text34')}}" name="out_fee" data-validation-message="{{:lang('user_save_text35')}}" class="am-radius" {{if !empty($data)}} value="{{$data.out_fee}}"{{/if}} />
+            </div>
+
+            <div class="am-form-group">
+                <label>{{:lang('user_save_text36')}}</label>
+                <div class="am-input-group am-input-group-sm">
+                       <input type="number" placeholder="{{:lang('user_save_text37')}}" name="handing_fee" data-validation-message="{{:lang('user_save_text35')}}" class="am-radius am-form-field" {{if !empty($data)}} value="{{$data.handing_fee}}"{{/if}} />
+                    <span class="am-input-group-btn">
+                        <button type="button" class="am-btn am-btn-default am-radius">%</button>
+                    </span>
+                </div>
+            </div>
+
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text38')}}</label>
+				<input type="number" placeholder="{{:lang('user_save_text38')}}" name="referrer" data-validation-message="{{:lang('user_save_text39')}}" min="0" class="am-radius" {{if !empty($data)}} value="{{$data.referrer}}"{{/if}} />
+			</div>
+
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text40')}}</label>
+				<input type="text" placeholder="{{:lang('user_save_text40')}}" name="pwd" pattern="{{:lang('common_regex_pwd')}}" data-validation-message="{{:lang('user_save_text41')}}" class="am-radius" value="" />
+			</div>
+			
+			<div class="am-form-group">
+				<label>{{:lang('user_save_text42')}}</label>
+				<select name='area_id'>
+				    {{foreach $areaList as $v}}
+					    <option value="{{$v.id}}" {{if (isset($data.warehouse_id) && $v.id == $data.warehouse_id)}}selected{{/if}}>{{$v.name}}</option>
+					{{/foreach}}
+				</select>
+			</div>
+
+			<!-- 插件扩展数据 start -->
+			{{if isset($shopxo_is_develop) and $shopxo_is_develop eq true}}
+                <div class="plugins-tag">
+                    <span>plugins_view_admin_user_save</span>
+                </div>
+            {{/if}}
+			{{if !empty($plugins_view_admin_user_save_data) and is_array($plugins_view_admin_user_save_data)}}
+				<div class="am-alert am-alert-secondary">
+					<label class="am-text-sm am-text-warning">该区域为插件扩展数据，请按照插件文档填写相应的值</label>
+					<div>
+						{{foreach $plugins_view_admin_user_save_data as $hook}}
+		                    {{if is_string($hook) or is_int($hook)}}
+		                        {{$hook|raw}}
+		                    {{/if}}
+		                {{/foreach}}
+					</div>
+				</div>
+			{{/if}}
+			<!-- 插件扩展数据 end -->
+
+			<div class="am-form-group am-form-group-refreshing am-margin-top-lg am-padding-left-0">
+				<input type="hidden" name="id" {{if !empty($data)}} value="{{$data.id}}"{{/if}} />
+				<button type="submit" class="am-btn am-btn-primary am-radius btn-loading-example am-btn-sm am-btn-block" data-am-loading="{loadingText:'{{:lang('admin_form_fields_text6')}}...'}">{{:lang('site_siteset_goods_text4')}}</button>
+			</div>
+		</form>
+        <!-- form end -->
+	</div>
+</div>
+<!-- right content end  -->
+		
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->

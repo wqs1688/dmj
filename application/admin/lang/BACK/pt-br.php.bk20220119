@@ -1,0 +1,342 @@
+<?php
+// +----------------------------------------------------------------------
+// | ShopXO 国内领先企业级B2C免费开源电商系统
+// +----------------------------------------------------------------------
+// | Copyright (c) 2011~2099 http://shopxo.net All rights reserved.
+// +----------------------------------------------------------------------
+// | Licensed ( https://opensource.org/licenses/mit-license.php )
+// +----------------------------------------------------------------------
+// | Author: Devil
+// +----------------------------------------------------------------------
+
+/**
+ * 模块语言包
+ * @author   Devil
+ * @blog     http://gong.gg/
+ * @version  0.0.1
+ * @datetime 2016-12-01T21:51:08+0800
+ */
+return [
+    // 图片验证码
+    'site_images_verify_rules_list'  => [
+            0 => ['value' => 'bgcolor', 'name' => 'fundo colorido'],
+            1 => ['value' => 'textcolor', 'name' => 'texto colorido'],
+            2 => ['value' => 'point', 'name' => 'ponto de interferência'],
+            3 => ['value' => 'line', 'name' => 'linha de interferência'],
+        ],
+
+    // 时区
+    'site_timezone_list' => [
+        'Pacific/Pago_Pago' => '(horário padrão-11:00) Midway, Samoa',
+        'Pacific/Rarotonga' => '(horário padrão-10:00) Havaí',
+        'Pacific/Gambier' => '(horário padrão-9:00) Alasca',
+        'America/Dawson' => '(horário padrão-8:00) Horário do Pacífico (EUA e Canadá)',
+        'America/Creston' => '(horário padrão-7:00) Hora da montanha (EUA e Canadá)',
+        'America/Belize' => '(horário padrão-6:00) Hora Central (EUA e Canadá), Cidade do México',
+        'America/Eirunepe' => '(horário padrão-5:00) Hora do Leste (EUA e Canadá), Bogotá',
+        'America/Antigua' => '(horário padrão-4:00) Horário do Atlântico (Canadá), Caracas',
+        'America/Argentina/Buenos_Aires' => '(horário padrão-3:00) Brasil, Buenos Aires, Georgetown',
+        'America/Noronha' => '(horário padrão-2:00) meio-atlântico',
+        'Atlantic/Cape_Verde' => '(horário padrão-1:00) Açores, Ilhas de Cabo Verde',
+        'Africa/Ouagadougou' => '(格林尼治horário padrão) Horário da Europa Ocidental, Londres, Casablanca',
+        'Europe/Andorra' => '(horário padrão+1:00) Horário da Europa Central, Angola, Líbia',
+        'Europe/Mariehamn' => '(horário padrão+2:00) Horário da Europa Oriental, Cairo, Atenas',
+        'Asia/Bahrain' => '(horário padrão+3:00) Bagdá, Kuwait, Moscou',
+        'Asia/Dubai' => '(horário padrão+4:00) Abu Dhabi, Mascate, Baku',
+        'Asia/Kolkata' => '(horário padrão+5:00) Ecaterimburgo, Islamabad, Carachi',
+        'Asia/Dhaka' => '(horário padrão+6:00) Almaty, Daca, Nova Aberia',
+        'Indian/Christmas' => '(horário padrão+7:00) Bangkok, Hanói, Jacarta',
+        'Asia/Shanghai' => '(horário padrão+8:00)Pequim, Chongqing, Hong Kong, Singapura',
+        'Australia/Darwin' => '(horário padrão+9:00) Tóquio, Seul, Osaka, Yakutsk',
+        'Australia/Adelaide' => '(horário padrão+10:00) Sydney, Guam',
+        'Australia/Currie' => '(horário padrão+11:00) Magadan, Ilhas Salomão',
+        'Pacific/Fiji' => '(horário padrão+12:00) Auckland, Wellington, Kamchatka'
+    ],
+
+    'second_nav_list' => [
+	    [
+			'name'	=> 'Configuração básica',
+			'type'	=> 'base',
+		],
+		[
+			'name'	=> 'Configurações do site',
+			'type'	=> 'siteset',
+		],
+		[
+			'name'	=> 'tipo de site',
+			'type'	=> 'sitetype',
+		],
+		[
+			'name'	=> 'Registro do usuário',
+			'type'	=> 'register',
+		],
+		[
+			'name'	=> 'Login de usuário',
+			'type'	=> 'login',
+		],
+		[
+			'name'	=> 'recuperar senha',
+			'type'	=> 'forgetpwd',
+		],
+		[
+			'name'	=> 'Código de verificação',
+			'type'	=> 'verify',
+		],
+		[
+			'name'	=> 'pedido pós-venda',
+			'type'	=> 'orderaftersale',
+		],
+		[
+			'name'	=> 'Apêndice',
+			'type'	=> 'attachment',
+		],
+		[
+			'name'	=> 'esconderijo',
+			'type'	=> 'cache',
+		],
+		[
+			'name'	=> 'extensão',
+			'type'	=> 'extends',
+		],	
+	],
+	
+	'siteset_nav_list'  =>  [
+	    [
+			'name'	=> 'primeira página',
+			'type'	=> 'index',
+		],
+		[
+			'name'	=> 'mercadoria',
+			'type'	=> 'goods',
+		],
+		[
+			'name'	=> 'procurar',
+			'type'	=> 'search',
+		],
+		[
+			'name'	=> 'Pedido',
+			'type'	=> 'order',
+		],
+		[
+			'name'	=> 'desconto',
+			'type'	=> 'discount',
+		],
+		[
+			'name'	=> 'expandir',
+			'type'	=> 'extends',
+		],
+	],
+	
+	'site_lang_list'   => [
+	    '1' => '&lang=zh-cn',
+		'2' => '&lang=pt-br',
+	],
+	
+	'site_nav_login_text'    => "Você pode fazer upload de até 3 fotos na imagem à esquerda, e uma delas será exibida aleatoriamente a cada vez",
+	'site_nav_register_text' => "Imagem de fundo personalizável, cinza inferior padrão",
+	'site_base_index_text1'  => "escolha o logotipo",
+	'site_base_index_text2'  => "status do site",
+	'site_base_index_text3'  => "Registrar informação",
+	'site_base_index_text4'  => "de outros",
+	
+	'site_siteset_index_text1' => "Base",
+	'site_siteset_index_text2' => "Não há dados, por favor vá para a classificação de mercadorias / gestão de mercadorias > e classificação primária que define a página inicial para recomendação",
+	'site_siteset_index_text3' => "modo automático",
+	'site_siteset_index_text4' => "Configure o número máximo de produtos exibidos em cada andar",
+	'site_siteset_index_text5' => "Não é recomendado modificar muito o número, isso fará com que a área em branco esquerda no lado do PC seja muito grande",
+	'site_siteset_index_text6' => "A síntese é: Popularidade->Vendas->Última classificação em ordem decrescente (desc)",
+	'site_siteset_index_text7' => "modo manual",
+	'site_siteset_index_text8' => "Você pode clicar e arrastar o título do produto para classificar e exibir em ordem",
+	'site_siteset_index_text9' => "Não é recomendado adicionar muitos produtos, isso fará com que a área em branco esquerda no lado do PC seja muito grande",
+	'site_siteset_index_text10' => "adição do produto",
+	'site_siteset_index_text11' => "Classificação das mercadorias",
+	'site_siteset_index_text12' => "Nível 1",
+	'site_siteset_index_text13' => "Nível 2",
+	'site_siteset_index_text14' => "Nível 3",
+	'site_siteset_index_text15' => "Nome do Produto",
+	'site_siteset_index_text16' => "procurar",
+	'site_siteset_index_text17' => "Por favor, procure por produtos",
+	
+	
+	'site_siteset_goods_text1' => "Nível",
+	'site_siteset_goods_text2' => "O nível de exibição padrão 3, o nível mínimo 1, o nível máximo 3",
+	'site_siteset_goods_text3' => "O nível é diferente e o estilo da página de classificação do front-end também será diferente",
+	'site_siteset_goods_text4' => "preservação",
+	
+	'site_siteset_extends_text1' => "Configuração básica",
+	'site_siteset_extends_text2' => "navegação rápida",
+	'site_siteset_extends_text3' => "Endereço do usuário",
+	
+	'site_sitetype_text1' => "销售型、常规电商流程，用户选择收货地址下单支付 -> 商家发货 -> 确认收货 -> 订单完成",
+	'site_sitetype_text2' => "展示型、仅展示产品，可发起咨询（不能下单）",
+	'site_sitetype_text3' => "自提点、下单时选择自提货物地址，用户下单支付 -> 确认提货 -> 订单完成",
+	'site_sitetype_text4' => "虚拟销售、常规电商流程，用户下单支付 -> 自动发货 -> 确认提货 -> 订单完成",
+	'site_sitetype_text5' => "存入仓库、把选中的商品存入仓库，商品所有者为当前操作用户",
+	'site_sitetype_text6' => "展示型",
+	'site_sitetype_text7' => "自提点",
+	'site_sitetype_text8' => "移除",
+	'site_sitetype_text9' => "编辑",
+	'site_sitetype_text10' => "添加地址",
+	'site_sitetype_text11' => "虚拟销售",
+	'site_sitetype_text12' => "地址添加",
+	'site_sitetype_text13' => "logo图片",
+	'site_sitetype_text14' => "选传",
+	'site_sitetype_text15' => "建议300x300px",
+	'site_sitetype_text16' => "上传图片",
+	'site_sitetype_text17' => "别名",
+	'site_sitetype_text18' => "选填",
+	'site_sitetype_text19' => "必填",
+	'site_sitetype_text20' => "联系人",
+	'site_sitetype_text21' => "联系电话",
+	'site_sitetype_text22' => "详细地址",
+	'site_sitetype_text23' => "定位",
+	'site_sitetype_text24' => "别名格式最多 16 个字符",
+	'site_sitetype_text25' => "联系人格式 2~16 个字符之间",
+	'site_sitetype_text26' => "联系电话格式有误",
+	'site_sitetype_text27' => "详细地址格式 1~80 个字符之间",
+	'site_sitetype_text28' => "确认",
+	
+	'site_register_text' => "选择图片",
+	
+	'site_login_text' => '图片',
+	'site_login_text1' => '背景色',
+	
+    'site_orderaftersale_text' => 'dias',
+	
+	'site_attachment_text1' => '默认否、建议开启上传图片重新绘制、防止木马病毒图片上传',
+	'site_attachment_text2' => '开启后gif动态图片将失效、由于重新绘制图片大小也会改变',
+	
+	'site_cache_text1' => '默认使用的文件缓存、使用Redis缓存PHP需要先安装Redis扩展',
+	'site_cache_text2' => '请确保Redis服务稳定性（Session使用缓存后、服务不稳定可能导致后台也无法登录）',
+	'site_cache_text3' => '如遇到Redis服务异常无法登录管理后台、修改配置文件',
+	'site_cache_text4' => '目录下',
+	'site_cache_text5' => '文件',
+	'site_cache_text6' => 'Session缓存配置',
+	'site_cache_text7' => '数据缓存配置',
+	'site_cache_text8' => '秒',
+	
+	'site_extends_text1' => '定时脚本配置',
+	'site_extends_text2' => '建议将脚本地址添加到linux定时任务定时请求即可（结果 sucs:0, fail:0 冒号后面则是处理的数据条数，sucs成功，fali失败）',
+	'site_extends_text3' => '分钟',
+	'site_extends_text4' => 'CDN配置',
+	'site_extends_text5' => '未设置则使用当前站点域名',
+	
+	'sms_nav_text1' => '短信设置',
+	'sms_nav_text2' => '消息模板',
+	'sms_nav_text3' => '阿里云短信管理地址',
+	'sms_nav_text4' => '点击去阿里云购买短信',
+	'sms_message_text1' => '后台',
+	'sms_message_text2' => '前端',
+	
+	'email_nav_text1' => '邮箱设置',
+	'email_nav_text2' => '消息模板',
+	'email_nav_text3' => '参考相关邮箱配置教程',
+	'email_nav_text4' => '点击去看教程',
+	'email_index_text1' => '测试接收的邮件地址',
+	'email_index_text2' => '请先保存配置后，再进行测试',
+	'email_index_text3' => '测试接收的邮件地址',
+	'email_index_text4' => '测试',
+	
+	'seo_index_text1' => '参考伪静态配置教程',
+	'seo_index_text2' => '点击去看教程',
+	
+	'agreement_nav_text' => '前端访问协议地址增加参数 is_content=1 则仅展示纯协议内容',
+	'agreement_register_text' => '查看详情',
+	
+	'form_operate_text1' => 'deletar',
+	'form_operate_text2' => 'Reiniciar',
+	'form_operate_text3' => 'pesquisa',
+	'form_operate_text4' => 'configurado',
+	'form_operate_text5' => 'detalhes',
+	'form_operate_text6' => 'editar',
+	'form_operate_text7' => 'deletar',
+	
+	'admin_index_text1' => 'recém adicionado',
+	'admin_index_text2' => '超级管理员默认拥有所有权限，不可更改。',
+	
+	'admin_save_text' => '管理员',
+	'admin_save_text1' => '添加',
+	'admin_save_text2' => 'editar',
+	'admin_save_text3' => '返回',
+	'admin_save_text4' => '用户名',
+	'admin_save_text5' => '登录密码',
+	'admin_save_text6' => '手机号码',
+	'admin_save_text7' => '电子邮箱',
+	'admin_save_text8' => '权限组',
+	'admin_save_text9' => '状态',
+	'admin_save_text10' => '负责仓库',
+	'admin_save_text11' => '选填',
+	'admin_save_text12' => '必选',
+	'admin_save_text13' => '必填',
+	'admin_save_text14' => '不可更改',
+	'admin_save_text15' => '用户名格式 5~18 个字符（可以是字母数字下划线）',
+	'admin_save_text16' => '密码格式 6~18 个字符',
+	'admin_save_text17' => '手机号码格式错误',
+	'admin_save_text18' => '电子邮箱格式错误、最多60个字符',
+	'admin_save_text19' => '可选择',
+	
+	'admin_user_text' => '导出Excel',
+	'admin_user_text1' => '暂无头像',
+	
+	'admin_useraddr_text' => '默认',
+	'admin_useraddr_text1' => '否',
+	'admin_useraddr_text2' => 'longitude',
+	'admin_useraddr_text3' => 'latitude',
+	'admin_useraddr_text4' => 'Ver local',
+    // seo
+    // url模式列表
+    'seo_url_model_list'        =>  [
+            0 => ['value' => 0, 'name' => 'Modo de compatibilidade', 'checked' => true],
+            1 => ['value' => 1, 'name' => 'Modo PATHINFO'],
+            2 => ['value' => 2, 'name' => 'Modo PATHINFO + endereço curto'],
+        ],
+
+    // 用户excel导出标题列表
+    'excel_user_title_list'     =>  [
+            'username'      =>  [
+                    'name' => 'nome do usuário',
+                    'type' => 'string',
+                ],
+            'nickname'      =>  [
+                    'name' => 'Apelido',
+                    'type' => 'int',
+                ],
+            'gender_text'   =>  [
+                    'name' => 'Gênero sexual',
+                    'type' => 'string',
+                ],
+            'birthday_text'=>   [
+                    'name' => 'Aniversário',
+                    'type' => 'string',
+                ],
+            'status_text'=>   [
+                    'name' => 'Estado',
+                    'type' => 'string',
+                ],
+            'mobile'        =>  [
+                    'name' => 'número de celular',
+                    'type' => 'int',
+                ],
+            'email'         =>  [
+                    'name' => 'E-mail',
+                    'type' => 'string',
+                ],
+            'province'      =>  [
+                    'name' => 'Província',
+                    'type' => 'string',
+                ],
+            'city'      =>  [
+                    'name' => 'cidade',
+                    'type' => 'string',
+                ],
+            'address'       =>  [
+                    'name' => 'Endereço',
+                    'type' => 'string',
+                ],
+            'add_time'      =>  [
+                    'name' => 'Horário de registro',
+                    'type' => 'string',
+                ],
+        ],
+];
+?>

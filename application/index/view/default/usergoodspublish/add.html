@@ -1,0 +1,261 @@
+{{include file="public/header" /}}
+
+<!-- conntent start  -->
+<div class="am-g am-padding-sm">
+    <!-- form start -->
+    <form class="am-form form-validation view-save" action="{{:MyUrl('index/usergoodspublish/save')}}" method="POST" request-type="ajax-fun" request-value="ViewModalBack"  enctype="multipart/form-data">
+        <input type="hidden" name="pid" value="{{if !empty($data['pid'])}}{{$data.pid}}{{/if}}" />
+        <input type="hidden" id="checkTitleUrl" value="{{:MyUrl('index/usergoodspublish/checkTitle')}}" />
+		<input type="hidden" id="checkSkuUrl" value="{{:MyUrl('index/usergoodspublish/checkSku')}}" />
+        <!-- 基础信息 -->
+        <div class="am-panel am-panel-default" id="goods-nav-base">
+            <div class="am-panel-hd">
+                <h3 class="am-panel-title">基础信息</h3>
+            </div>
+            <div class="am-panel-bd am-padding-vertical-xs">
+                <div class="am-form-group">
+                    <label>商品名称<span class="am-form-group-label-tips-must">必填</span></label>
+                    <div class="am-input-group am-input-group-sm">
+                        <input type="hidden" name="title_color" value="{{if !empty($data['title_color'])}}{{$data.title_color}}{{/if}}" />
+                        <input type="text" name="title" placeholder="标题名称" minlength="2" maxlength="160" data-validation-message="标题名称格式 2~160 个字符" class="am-form-field am-radius" {{if !empty($data)}} value="{{$data.title}}" {{/if}} {{if !empty($data['title_color'])}} style="color:{{$data.title_color}};" {{/if}} required />
+                        <span class="am-input-group-btn">
+                            <button type="button" class="am-btn am-btn-default am-btn-xs colorpicker-submit" data-input-tag="input[name='title']" data-color-tag="input[name='title_color']">
+                                <img src="{{$attachment_host}}/static/common/images/colorpicker.png" />
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label>商品简述<span class="am-form-group-label-tips">选填</span></label>
+                    <input type="text" name="simple_desc" placeholder="商品简述" maxlength="230" data-validation-message="商品简述格式 最多230个字符" class="am-radius" {{if !empty($data)}} value="{{$data.simple_desc}}"{{/if}} />
+                </div>
+                <div class="am-form-group">
+                    <label>商品型号<span class="am-form-group-label-tips">选填</span></label>
+                    <input type="text" name="model" placeholder="商品型号" maxlength="30" data-validation-message="商品型号格式 最多30个字符" class="am-radius" {{if !empty($data)}} value="{{$data.model}}"{{/if}} />
+                </div>
+                <div class="am-form-group">
+                    <label>商品分类<span class="am-form-group-label-tips-must">至少选择一个</span></label>
+                    <br />
+                    <select name="category_id" class="am-radius chosen-select" multiple="multiple" minchecked="1" data-placeholder="请选择..." >
+                        {{if !empty($goods_category_list)}}
+                            {{foreach $goods_category_list as $v}}
+                                <option value="{{$v.id}}" {{if !empty($data['category_ids']) and in_array($v['id'], $data['category_ids'])}}selected{{/if}}>一级 - {{$v.name}}</option>
+                                {{if !empty($v['items'])}}
+                                    {{foreach $v.items as $vs}}
+                                        <option style="padding-left: 30px;" value="{{$vs.id}}" {{if !empty($data['category_ids']) and in_array($vs['id'], $data['category_ids'])}}selected{{/if}}>二级-{{$vs.name}}</option>
+                                        {{if !empty($vs['items'])}}
+                                            {{foreach $vs.items as $vss}}
+                                                <option style="padding-left: 60px;" value="{{$vss.id}}" {{if !empty($data['category_ids']) and in_array($vss['id'], $data['category_ids'])}}selected{{/if}}>三级-{{$vss.name}}</option>
+                                            {{/foreach}}
+                                        {{/if}}
+                                    {{/foreach}}
+                                {{/if}}
+                            {{/foreach}}
+                        {{/if}}
+                    </select>
+                </div>
+                <div class="am-form-group am-form-file">
+                    <label class="block">封面图片<span class="am-form-group-label-tips">选传</span><span class="am-form-group-label-tips">留空则取相册第一张图、建议800*800px</span></label>
+                    <ul class="plug-file-upload-view goods-recommended-images-view" data-form-name="images" data-max-number="1" data-dialog-type="images">
+                        {{if !empty($data['images'])}}
+                            <li>
+                                <input type="text" name="images" value="{{$data.images}}" />
+                                <img src="{{$data.images}}" />
+                                <i>×</i>
+                            </li>
+                        {{/if}}
+                    </ul>
+                    <div class="plug-file-upload-submit" data-view-tag="ul.goods-recommended-images-view">+上传图片</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 商品参数 -->
+        <div class="am-panel am-panel-default" id="goods-nav-operations" data-spec-add-max-number="{{:MyC('common_spec_add_max_number', 3, true)}}">
+            <div class="am-panel-hd">
+                <h3 class="am-panel-title">商品参数<span class="am-form-group-label-tips-must">必填</span></h3>
+            </div>
+            <div class="am-panel-bd business-form-group">
+                <div class="parameters-container am-margin-top-sm">
+                    <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm parameters-table2 table-thead-beautify am-margin-bottom-0">
+                        <thead>
+                            <tr>
+                                <th class="spec-quick-th-title">长（cm）</th>
+                                <th class="spec-quick-th-title">宽（cm）</th>
+                                <th class="spec-quick-th-title">高（cm）</th>
+                                <th class="spec-quick-th-title">重量（kg）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="am-text-middle">
+                                    <input type="number" name="length" placeholder="长" {{if(isset($data['length']))}}value="{{$data['length']}}"{{/if}} data-validation-message="请填写长度" maxlength="10" required />
+                                </td>
+                                <td class="am-text-middle">
+                                    <input type="number" name="width" placeholder="宽" {{if(isset($data['length']))}}value="{{$data['width']}}"{{/if}} data-validation-message="请填写宽度" maxlength="10" required />
+                                </td>
+                                <td class="am-text-middle">
+                                    <input type="number" name="height" placeholder="高" {{if(isset($data['length']))}}value="{{$data['height']}}"{{/if}} maxlength="10" data-validation-message="请填写高度" required />
+                                </td>
+                                <td class="am-text-middle">
+                                    <input type="number" name="weight" placeholder="重量" {{if(isset($data['length']))}}value="{{$data['weight']}}"{{/if}} data-validation-message="请填写重量" maxlength="10" required />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 商品规格 -->
+        <div class="am-panel am-panel-default" id="goods-nav-operations" data-spec-add-max-number="{{:MyC('common_spec_add_max_number', 3, true)}}">
+            <div class="am-panel-hd">
+                <h3 class="am-panel-title">商品规格<span class="am-form-group-label-tips-must">必填</span></h3>
+            </div>
+            <div class="am-panel-bd business-form-group">
+                <div class="am-margin-horizontal-sm">
+                    {{include file="usergoodspublish/spec" /}}
+                </div>
+            </div>
+        </div>
+
+        <!-- 相册 -->
+        <div class="am-panel am-panel-default" id="goods-nav-photo">
+            <div class="am-panel-hd">
+                <h3 class="am-panel-title">商品相册<span class="am-form-group-label-tips-must">必传</span></h3>
+            </div>
+            <div class="am-panel-bd business-form-group">
+                <div class="am-margin-horizontal-sm">
+                    <div class="am-alert am-alert-warning am-radius" data-am-alert>
+                        <button type="button" class="am-close">&times;</button>
+                        <p>可拖拽图片进行排序，建议图片尺寸一致800*800px、最多30张</p>
+                    </div>
+                    <ul class="plug-file-upload-view goods-photo-view" data-form-name="photo[]" data-max-number="30" data-dialog-type="images">
+                        {{if !empty($data['photo'])}}
+                            {{foreach $data.photo as $v}}
+                                <li>
+                                    <input type="text" name="photo[]" value="{{$v.images_old}}" />
+                                    <img src="{{$v.images}}" />
+                                    <i>×</i>
+                                </li>
+                            {{/foreach}}
+                        {{/if}}
+                    </ul>
+                    <div class="plug-file-upload-submit" data-view-tag="ul.goods-photo-view">+上传相册</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 商品详情 -->
+        <div class="am-panel am-panel-default" id="goods-nav-web">
+            <div class="am-panel-hd">
+                <h3 class="am-panel-title">商品详情<span class="am-form-group-label-tips-must">必填</span></h3>
+            </div>
+            <div class="am-panel-bd business-form-group">
+                <div class="am-margin-horizontal-sm">
+                    <textarea class="am-radius am-validate" name="content_web" maxlength="105000" id="editor-tag" data-validation-message="商品详情内容最多 105000 个字符" style="width: 100%;">{{if !empty($data['content_web'])}}{{$data.content_web}}{{/if}}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="am-form-group am-form-group-refreshing am-margin-top-lg am-padding-left-0">
+            <input type="hidden" name="id" {{if isset($data) and !empty($data['id']) and (!isset($is_copy) or $is_copy neq 1)}} value="{{$data.id}}"{{/if}} />
+            <button onclick="checkSku();" type="button" class="am-btn am-btn-primary am-radius btn-loading-example am-btn-sm am-btn-block" data-am-loading="{loadingText:'处理中...'}">保存</button>
+        </div>
+    </form>
+    <!-- form end -->
+</div>
+<!-- right content end  -->
+
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+<script type="text/javascript">
+    // 返回处理
+    function ViewModalBack(e)
+    {
+        if(e.code == 0)
+        {
+            $.AMUI.progress.done();
+            Prompt(e.msg, 'success');
+            setTimeout(function()
+            {
+                parent.location.reload();
+            }, 1500);
+        } else {
+            $('form.form-validation').find('button[type="submit"]').button('reset');
+            $.AMUI.progress.done();
+            Prompt(e.msg);
+        }
+    }
+	function toUpper(obj){
+	    var sku = $(obj).val();
+		var re = new RegExp("^[0-9A-Za-z]{6}$");
+		sku = sku.toUpperCase();
+		if(!re.test(sku)){
+            Prompt("请填入6位英文数字");
+            obj.focus();
+			return false;
+        }
+		$(obj).val(sku);
+	}
+    function checkSku(){
+        var chkFlg = 1;
+        var url = $("#checkSkuUrl").val();
+        var userId = $("#userId").val();
+		var title = $("input[name='title']").val();
+		var url2 = $("#checkTitleUrl").val();
+        var pid = $("input[name='pid']").val();
+		$.ajax({
+            async: false, 
+            url:url2,
+            type:"post",
+            data: {"title":title,"user_id":userId.replace(/\b(0+)/gi,""),"pid":pid},
+            dataType: 'json',
+            success: function(result){
+                if(result != 0){    
+                    chkFlg = 0;
+                    Prompt("商品名称重复了，请重新填写");
+                }
+            },
+        });
+        if(chkFlg == 0){
+            return false;
+        }
+        $("input[name^='specifications_barcode']").not("[readonly]").each(function(i){
+            var sku = $(this).val();
+            var re = new RegExp("^[0-9A-Za-z]{6}$");
+
+            if(sku == ""){
+                chkFlg = 0;
+                Prompt("请先填入SKU码");
+                return false;
+            }else if(!re.test(sku)){
+                chkFlg = 0;
+                Prompt("SKU码请填入6位英文数字");
+                return false;
+            }
+            $.ajax({
+                async: false, 
+                url:url,
+                type:"post",
+                data: {"sku":sku},
+                dataType: 'json',
+                success: function(result){
+                    if(result.data != 0){    
+                        chkFlg = 0;
+                        Prompt("SKU码重复了，请重新填写");
+                    }
+                },
+            });
+            if(chkFlg == 0){
+                return false;
+            }
+        });
+        
+        if(chkFlg == 1){
+            $("form").submit();
+        }
+    }
+    </script>

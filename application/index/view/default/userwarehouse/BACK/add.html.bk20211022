@@ -1,0 +1,125 @@
+{{include file="public/header" /}}
+
+<!-- conntent start  -->
+<div class="am-g am-padding-sm" id="user-warehouse-popup">
+    <!-- form start -->
+    <form class="am-form form-validation view-save" action="{{:MyUrl('index/userwarehouse/save')}}" method="POST" request-type="ajax-fun" request-value="ViewModalBack"  enctype="multipart/form-data">
+        <input type="hidden" name='id' {{if isset($params['id'])}} value="{{$params['id']}}" {{/if}}/>
+        <!-- 商品信息 -->
+        <div class="am-panel am-panel-default" id="goods-nav-base">
+            <div class="am-panel-hd">
+                <h3 class="am-panel-title">商品信息</h3>
+            </div>
+            <div class="am-panel-bd am-padding-vertical-xs">
+                <div class="am-form-group selection-container" data-search-url="{{:MyUrl('index/userwarehouse/goodsspecsearch')}}">
+                    <label>商品<span class="am-form-group-label-tips-must">必填</span></label>
+                    <br />
+                    {{if !empty($goods_publish_list)}}
+                    <select name="goods_id" class="am-radius chosen-select selection-form-goods" data-placeholder="请选择..." data-validation-message="请选择商品">
+                        <option value="0">请选择...</option>
+                        {{foreach $goods_publish_list as $v}}
+                            <option value="{{$v.goods_id}}" {{if isset($data['goods_id']) and $data['goods_id'] eq $v['id']}}selected{{/if}}>{{$v.title}}</option>
+                        {{/foreach}}
+                    </select>
+                    {{else}}
+                    <input type="hidden" name="goods_id" {{if !empty($info)}} value="{{$info.goods_id}}" {{/if}} />
+                    {{/if}}
+                </div>
+                <div class="am-form-group goods-spec-container">
+                    {{include file="userwarehouse/goods_spec_search" /}}
+                </div>
+            </div>
+        </div>
+
+        <!-- 入库信息 -->
+        <div class="am-panel am-panel-default" id="goods-nav-base">
+            <div class="am-panel-hd">
+                <h3 class="am-panel-title">入库信息</h3>
+            </div>
+            <div class="am-panel-bd am-padding-vertical-xs">
+                <div class="am-form-group">
+                    <label>货源地址<span class="am-form-group-label-tips">选填</span></label>
+                    <input type="text" name="source_address" placeholder="货源地址" maxlength="300" data-validation-message="货源地址格式 最多300个字符" class="am-radius" {{if !empty($info)}} value="{{$info.source_address}}"{{/if}} />
+                </div>
+            </div>
+            <div class="am-panel-bd am-padding-vertical-xs">
+                <div class="am-form-group">
+                    <label>外包装参数<span class="am-form-group-label-tips-must">必填</span></label>
+                    <div class="am-alert am-alert-warning am-radius am-margin-top-0" data-am-alert>
+                        <p>分别填写每个包装的尺寸、重量信息</p>
+                    </div>
+                    <!--表列表数据 -->
+                    <div class="parameters-container am-margin-top-sm">
+                        <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm parameters-table table-thead-beautify am-margin-bottom-0">
+                            <thead>
+                                <tr>
+                                    <th class="spec-quick-th-title">长（cm）</th>
+                                    <th class="spec-quick-th-title">宽（cm）</th>
+                                    <th class="spec-quick-th-title">高（cm）</th>
+                                    <th class="spec-quick-th-title">重量（kg）</th>
+                                    <th class="spec-quick-th-value">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{if !empty($parameters) and is_array($parameters)}}
+                                    {{foreach $parameters as $pv}}
+                                        <tr>
+                                            <td class="am-text-middle">
+                                                <input type="number" name="parameters_long[]" placeholder="长" value="{{$pv->parameters_long}}" data-validation-message="请填写长度" maxlength="20" required />
+                                            </td>
+                                            <td class="am-text-middle">
+                                                <input type="number" name="parameters_width[]" placeholder="宽" value="{{$pv->parameters_width}}" data-validation-message="请填写宽度" maxlength="20" required />
+                                            </td>
+                                            <td class="am-text-middle">
+                                                <input type="number" name="parameters_height[]" placeholder="高" value="{{$pv->parameters_height}}" maxlength="20" data-validation-message="请填写高度" required />
+                                            </td>
+                                            <td class="am-text-middle">
+                                                <input type="number" name="parameters_weight[]" placeholder="重量" value="{{$pv->parameters_weight}}" data-validation-message="请填写重量" maxlength="20" required />
+                                            </td>
+                                            <td class="am-text-middle">
+                                                <a href="javascript:;" class="am-text-xs am-text-danger line-remove">移除</a>
+                                            </td>
+                                        </tr>
+                                    {{/foreach}}
+                                {{/if}}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="am-margin-top-sm">
+                        <span class="business-operations-submit parameters-line-add">+添加一行</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="am-form-group am-form-group-refreshing am-margin-top-lg am-padding-left-0">
+            <button type="submit" class="am-btn am-btn-primary am-radius btn-loading-example am-btn-sm am-btn-block" data-am-loading="{loadingText:'处理中...'}">保存</button>
+        </div>
+    </form>
+    <!-- form end -->
+</div>
+<!-- right content end  -->
+
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+<script type="text/javascript">
+    // 返回处理
+    function ViewModalBack(e)
+    {
+        if(e.code == 0)
+        {
+            $.AMUI.progress.done();
+            Prompt(e.msg, 'success');
+            setTimeout(function()
+            {
+                parent.location.reload();
+            }, 1500);
+        } else {
+            $('form.form-validation').find('button[type="submit"]').button('reset');
+            $.AMUI.progress.done();
+            Prompt(e.msg);
+        }
+    }
+    </script>

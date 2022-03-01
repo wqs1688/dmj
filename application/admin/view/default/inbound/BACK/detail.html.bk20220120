@@ -1,0 +1,132 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+    <div class="content">
+        <!-- 入库信息 -->
+        <div class="am-panel am-panel-default" id="goods-nav-base">
+            <div class="am-panel-hd">
+                <h3 class="am-panel-title">入库信息</h3>
+            </div>
+            <div class="am-panel-bd am-padding-vertical-xs">
+                {{foreach $info['boxs'] as $val }}
+                <div class="am-form-group">
+                    <label>外包装参数</label>
+                    <!--表列表数据 -->
+                    <div class="parameters-container am-margin-top-sm">
+                        <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm size-table table-thead-beautify am-margin-bottom-0">
+                            <thead>
+                                <tr>
+                                    <th class="spec-quick-th-title">长（cm）</th>
+                                    <th class="spec-quick-th-title">宽（cm）</th>
+                                    <th class="spec-quick-th-title">高（cm）</th>
+                                    <th class="spec-quick-th-title">重量（kg）</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="am-text-middle">{{$val['box_length']}}</td>
+                                    <td class="am-text-middle">{{$val['box_width']}}</td>
+                                    <td class="am-text-middle">{{$val['box_height']}}</td>
+                                    <td class="am-text-middle">{{$val['box_weight']}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <label>商品信息</label>
+                    <!--表列表数据 -->
+                    <div class="parameters-container am-margin-top-sm">
+                        <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm size-table table-thead-beautify am-margin-bottom-0">
+                            <thead>
+                                <tr>
+                                    <th class="spec-quick-th-title">商品名</th>
+                                    <th class="spec-quick-th-title">规格</th>
+                                    <th class="spec-quick-th-title">SKU码</th>
+                                    <th class="spec-quick-th-title">入库数量</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {{foreach $info['details'][$val['box_id']] as $dval}}
+                                <tr>
+                                    <td class="am-text-middle">{{$dval['title']}}</td>
+                                    <td class="am-text-middle">{{$dval['value']}}</td>
+                                    <td class="am-text-middle">{{$dval['good_sku']}}</td>
+                                    <td class="am-text-middle">{{$dval['good_num']}}</td>
+                                </tr>
+                            {{/foreach}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {{/foreach}}
+            </div>
+        </div>
+
+        <!-- 核查信息 -->
+         <div class="am-panel am-panel-default" id="goods-nav-base">
+            <div class="am-panel-hd">
+                <h3 class="am-panel-title">核查信息</h3>
+            </div>
+            <div class="am-panel-bd am-padding-vertical-xs">
+                <div class="am-form-group">
+                    <label>状态<span class="am-form-group-label-tips-must">必填</span></label>
+                    <div class="am-radius">
+                        {{foreach $status as $v}} 
+                            {{if $v.value == $info['status']}} {{$v.name}} {{/if}}
+                        {{/foreach}}
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label>快递</label>
+                    <div class="am-radius">
+                        {{$expressName}}
+                    </div>
+                </div>
+            </div>
+            <div class="am-panel-bd am-padding-vertical-xs">
+                <div class="am-form-group">
+                    <label>核查结果</label>
+                    <textarea name="check_info" maxlength="500" data-validation-message="核查结果 最多500个字符">{{if !empty($info)}} {{$info.check_info}} {{/if}}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- right content end  -->
+
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+<script type="text/javascript">
+// 返回处理
+function ViewModalBack(e)
+{
+    $(function()
+    {
+        if(e.code == 0)
+        {
+            $.AMUI.progress.done();
+            Prompt(e.msg, 'success');
+            setTimeout(function()
+            {
+                // 关闭弹窗、仅关闭窗口后列表数据不更新
+                // $(window.parent.document).find('.warehouse-goods-popup .am-close').trigger('click');
+
+                // 刷新页面、刷新页面列表数据重新加载
+                if(self.frameElement && self.frameElement.tagName == "IFRAME")
+                {
+                    parent.location.reload();
+                } else {
+                    window.location.reload();
+                }
+            }, 1500);
+        } else {
+            $('form.form-validation').find('button[type="submit"]').button('reset');
+            $.AMUI.progress.done();
+            Prompt(e.msg);
+        }
+    });
+}
+</script>

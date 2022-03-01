@@ -1,0 +1,92 @@
+/**
+ * 外包装参数数据创建
+ * @author  R
+ * @version 1.0.0
+ * @date    2021-07-22
+ * @desc    description
+ * @param   {[int]}           type  [展示类型（0,1,2）]
+ * @param   {[string]}        name  [参数名称]
+ * @param   {[string]}        value [参数值]
+ */
+ function ParametersItemHtmlCreated(long, width, height, weight)
+ {
+     var index = parseInt(Math.random()*1000001);
+     var html = '<tr class="parameters-line-'+index+'">';
+         html += '<td class="am-text-middle">';
+         html += '<input type="number" name="parameters_long[]" placeholder="长" value="'+(long || '')+'" maxlength="20" data-validation-message="请填写长度" required />';
+         html += '</td>';
+         html += '<td class="am-text-middle">';
+         html += '<input type="number" name="parameters_width[]" placeholder="宽" value="'+(width || '')+'" data-validation-message="请填写宽度" maxlength="20" required />';
+         html += '</td>';
+         html += '<td class="am-text-middle">';
+         html += '<input type="number" name="parameters_height[]" placeholder="高" value="'+(height || '')+'" maxlength="20" data-validation-message="请填写高度" required />';
+         html += '</td>';
+         html += '<td class="am-text-middle">';
+         html += '<input type="number" name="parameters_weight[]" placeholder="重量" value="'+(weight || '')+'" maxlength="20" data-validation-message="请填写重量" required />';
+         html += '</td>';
+         html += '<td class="am-text-middle">';
+         html += '<span class="am-text-xs cr-red c-p line-remove">移除</span></td>';
+         html += '</tr>';
+ 
+     // 数据添加
+     var $parameters_table = $('.parameters-table');
+     $parameters_table.append(html);
+ }
+
+$(function()
+{
+    // 搜索商品
+    $(document).on('change', '.selection-container .chosen-select', function()
+    {
+        // 请求参数
+        var url = $('.selection-container').data('search-url');
+        var goods_id = $('.selection-form-goods').val();
+
+        var $this = $(this);
+        $.AMUI.progress.start();
+        // $this.button('loading');
+        $('.goods-spec-container').html('');
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: {"goods_id":goods_id},
+            dataType: 'json',
+            success:function(res)
+            {
+                $.AMUI.progress.done();
+                // $this.button('reset');
+                if(res.code == 0)
+                {
+                    $('.goods-spec-container').attr('data-is-init', 0);
+                    $('.goods-spec-container').html(res.data.data);
+                } else {
+                    Prompt(res.msg);
+                    $('.goods-spec-container').html('<div class="table-no"><i class="am-icon-warning"></i> '+res.msg+'</div>');
+                }
+            },
+            error: function(xhr, type)
+            {
+                $.AMUI.progress.done();
+                // $this.button('reset');
+                var msg = HtmlToString(xhr.responseText) || '异常错误';
+                Prompt(msg, null, 30);
+                $('.goods-spec-container').html('<div class="table-no"><i class="am-icon-warning"></i> '+msg+'</div>');
+            }
+        });
+    });
+
+    // 外包装参数添加
+    var $parameters_table = $('.parameters-table');
+    $('.parameters-line-add').on('click', function()
+    {
+        // 追加内容
+        ParametersItemHtmlCreated();
+    });
+
+    // 外包装参数移除
+    $parameters_table.on('click', '.line-remove', function()
+    {
+        $(this).parents('tr').remove();
+    });
+
+});

@@ -1,0 +1,13 @@
+<ul class="am-nav am-nav-pills table-nav second-nav">
+	<li {{if $nav_type eq 'email'}}class="am-active"{{/if}} data-type="email">
+		<a href="{{:MyUrl('admin/email/index', ['type'=>'email']).$lang_type}}">{{:lang("email_nav_text1")}}</a>
+	</li>
+	<li {{if $nav_type eq 'message'}}class="am-active"{{/if}} data-type="message">
+		<a href="{{:MyUrl('admin/email/index', ['type'=>'message']).$lang_type}}">{{:lang("email_nav_text2")}}</a>
+	</li>
+</ul>
+
+<div class="am-alert am-alert-warning am-radius am-margin-bottom-0" data-am-alert>
+    <button type="button" class="am-close">&times;</button>
+    <p class="am-text-xs">{{:lang("email_nav_text3")}} <a href="https://ask.shopxo.net/article/41" class="am-margin-left-sm" target="_blank">{{:lang("email_nav_text4")}} <i class="am-icon-external-link"></i></a> </p>
+</div>

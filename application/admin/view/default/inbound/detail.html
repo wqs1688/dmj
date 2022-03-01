@@ -1,0 +1,126 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+    <div class="content">
+        <!-- 入库信息 -->
+        <div class="am-panel am-panel-default" id="goods-nav-base">
+            <div class="am-panel-hd">
+                <h3 class="am-panel-title">{{:lang('inbound_detail_text1')}}</h3>
+            </div>
+            <div class="am-panel-bd am-padding-vertical-xs">
+                {{foreach $info['boxs'] as $val }}
+                <div class="am-form-group">
+                    <label>{{:lang('inbound_detail_text2')}}</label>
+                    <!--表列表数据 -->
+                    <div class="parameters-container am-margin-top-sm">
+                        <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm size-table table-thead-beautify am-margin-bottom-0">
+                            <thead>
+                                <tr>
+                                    <th class="spec-quick-th-title">{{:lang('inbound_detail_text3')}}（cm）</th>
+                                    <th class="spec-quick-th-title">{{:lang('inbound_detail_text4')}}（cm）</th>
+                                    <th class="spec-quick-th-title">{{:lang('inbound_detail_text5')}}（cm）</th>
+                                    <th class="spec-quick-th-title">{{:lang('inbound_detail_text6')}}（kg）</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="am-text-middle">{{$val['box_length']}}</td>
+                                    <td class="am-text-middle">{{$val['box_width']}}</td>
+                                    <td class="am-text-middle">{{$val['box_height']}}</td>
+                                    <td class="am-text-middle">{{$val['box_weight']}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <label>{{:lang('inbound_detail_text7')}}</label>
+                    <!--表列表数据 -->
+                    <div class="parameters-container am-margin-top-sm">
+                        <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm size-table table-thead-beautify am-margin-bottom-0">
+                            <thead>
+                                <tr>
+                                    <th class="spec-quick-th-title">{{:lang('inbound_detail_text8')}}</th>
+                                    <th class="spec-quick-th-title">{{:lang('inbound_detail_text9')}}</th>
+                                    <th class="spec-quick-th-title">{{:lang('inbound_detail_text10')}}</th>
+                                    <th class="spec-quick-th-title">{{:lang('inbound_detail_text11')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {{foreach $info['details'][$val['box_id']] as $dval}}
+                                <tr>
+                                    <td class="am-text-middle">{{$dval['title']}}</td>
+                                    <td class="am-text-middle">{{$dval['value']}}</td>
+                                    <td class="am-text-middle">{{$dval['good_sku']}}</td>
+                                    <td class="am-text-middle">{{$dval['good_num']}}</td>
+                                </tr>
+                            {{/foreach}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {{/foreach}}
+            </div>
+        </div>
+
+        <!-- 核查信息 -->
+         <div class="am-panel am-panel-default" id="goods-nav-base">
+            <div class="am-panel-hd">
+                <h3 class="am-panel-title">{{:lang('inbound_detail_text12')}}</h3>
+            </div>
+            <div class="am-panel-bd am-padding-vertical-xs">
+                <div class="am-form-group">
+                    <label>{{:lang('inbound_detail_text13')}}</label>
+                    <div class="am-radius">
+                        {{foreach $status as $v}} 
+                            {{if $v.value == $info['status']}} {{$v.name}} {{/if}}
+                        {{/foreach}}
+                    </div>
+                </div>
+            </div>
+            <div class="am-panel-bd am-padding-vertical-xs">
+                <div class="am-form-group">
+                    <label>{{:lang('inbound_detail_text15')}}</label>
+                    <textarea name="check_info" readonly="readonly">{{if !empty($info)}} {{$info.check_info}} {{/if}}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- right content end  -->
+
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+<script type="text/javascript">
+// 返回处理
+function ViewModalBack(e)
+{
+    $(function()
+    {
+        if(e.code == 0)
+        {
+            $.AMUI.progress.done();
+            Prompt(e.msg, 'success');
+            setTimeout(function()
+            {
+                // 关闭弹窗、仅关闭窗口后列表数据不更新
+                // $(window.parent.document).find('.warehouse-goods-popup .am-close').trigger('click');
+
+                // 刷新页面、刷新页面列表数据重新加载
+                if(self.frameElement && self.frameElement.tagName == "IFRAME")
+                {
+                    parent.location.reload();
+                } else {
+                    window.location.reload();
+                }
+            }, 1500);
+        } else {
+            $('form.form-validation').find('button[type="submit"]').button('reset');
+            $.AMUI.progress.done();
+            Prompt(e.msg);
+        }
+    });
+}
+</script>

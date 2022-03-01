@@ -1,0 +1,98 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+    <div class="content">
+        <!-- 入库信息 -->
+        <!-- form start -->
+        <form class="am-form form-validation" action="{{:MyUrl('admin/inbound/warehousesave')}}" method="POST" request-type="ajax-fun" request-value="ViewModalBack">
+            <div class="am-panel am-panel-default" id="goods-nav-base">
+                <div class="am-panel-hd">
+                    <h3 class="am-panel-title">{{:lang('inbound_detail_text1')}}</h3>
+                    <input type="hidden" name="put_id" value="{{$info['put_id']}}">
+                </div>
+                <div class="am-panel-bd am-padding-vertical-xs">
+                    {{foreach $info['boxs'] as $key=>$val }}
+                    <div class="am-form-group">
+                        
+                    <input type='hidden' name='length[{{$key}}]' value="{{$val['box_length']}}">
+                    <input type='hidden' name='width[{{$key}}]' value="{{$val['box_width']}}">
+                    <input type='hidden' name='height[{{$key}}]' value="{{$val['box_height']}}">
+                    <input type='hidden' name='weight[{{$key}}]' value="{{$val['box_weight']}}">
+                        
+                        <label>{{:lang('inbound_detail_text16')}}</label>
+                        <!--表列表数据 -->
+                        <div class="parameters-container am-margin-top-sm">
+                            <table class="am-table am-table-bordered am-table-centered am-table-striped am-table-hover am-margin-bottom-sm size-table table-thead-beautify am-margin-bottom-0">
+                                <thead>
+                                    <tr>
+                                        <th class="spec-quick-th-title">{{:lang('inbound_detail_text8')}}</th>
+                                        <th class="spec-quick-th-title">{{:lang('inbound_detail_text10')}}</th>
+                                        <th class="spec-quick-th-title">{{:lang('inbound_detail_text17')}}</th>
+                                        <th class="spec-quick-th-title">{{:lang('inbound_detail_text18')}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {{foreach $info['details'][$val['box_id']] as $dval}}
+                                    <input type='hidden' name='sku{{$key}}[]' value="{{$dval['good_sku']}}">
+                                    <input type='hidden' name='goodId{{$key}}[]' value="{{$dval['good_id']}}">
+                                    <tr>
+                                        <td class="am-text-middle">{{$dval['title']}}</td>
+                                        <td class="am-text-middle">{{$dval['good_sku']}}</td>
+                                        <td class="am-text-middle">{{$dval['good_num']}}</td>
+                                        <td class="am-text-middle"><input type="number" name="inventory{{$key}}[]" placeholder="{{:lang('inbound_detail_text18')}}" class="am-form-field am-radius" {{if !empty($data['give_integral'])}} value="{{$data.give_integral}}"{{/if}} /></td>
+                                    </tr>
+                                {{/foreach}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {{/foreach}}
+                </div>
+            </div>
+            
+            <div class="am-form-group am-margin-top-lg am-padding-left-0">
+                <input type="hidden" name="id" {{if !empty($info)}} value="{{$info.id}}"{{/if}} />
+                <button type="submit" class="am-btn am-btn-primary am-radius btn-loading-example am-btn-sm am-btn-block" data-am-loading="{loadingText:'{{:lang('admin_form_fields_text6')}}...'}">{{:lang('site_siteset_goods_text4')}}</button>
+            </div>
+        </form>
+        <!-- form end -->
+    </div>
+</div>
+<!-- right content end  -->
+
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+<script type="text/javascript">
+// 返回处理
+function ViewModalBack(e)
+{
+    $(function()
+    {
+        if(e.code == 0)
+        {
+            $.AMUI.progress.done();
+            Prompt(e.msg, 'success');
+            setTimeout(function()
+            {
+                // 关闭弹窗、仅关闭窗口后列表数据不更新
+                // $(window.parent.document).find('.warehouse-goods-popup .am-close').trigger('click');
+
+                // 刷新页面、刷新页面列表数据重新加载
+                if(self.frameElement && self.frameElement.tagName == "IFRAME")
+                {
+                    parent.location.reload();
+                } else {
+                    window.location.reload();
+                }
+            }, 1500);
+        } else {
+            $('form.form-validation').find('button[type="submit"]').button('reset');
+            $.AMUI.progress.done();
+            Prompt(e.msg);
+        }
+    });
+}
+</script>

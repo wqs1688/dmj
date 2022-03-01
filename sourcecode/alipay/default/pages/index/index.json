@@ -1,0 +1,8 @@
+{
+    "pullRefresh": true,
+    "usingComponents": {
+        "component-quick-nav": "/components/quick-nav/quick-nav",
+        "component-icon-nav": "/components/icon-nav/icon-nav",
+        "component-slider": "/components/slider/slider"
+    }
+}

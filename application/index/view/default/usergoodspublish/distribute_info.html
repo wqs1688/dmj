@@ -1,0 +1,94 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="am-g am-padding-sm">
+    {{if !empty($data['spec'])}}
+        <!-- form start -->
+        <form class="am-form form-validation" action="{{:MyUrl('index/usergoodspublish/distributesave')}}" method="POST" request-type="ajax-fun" request-value="ViewModalBack">
+            <table class="am-table am-table-striped am-table-hover form-inventory-container">
+                <thead>
+                    <tr>
+                        <th>规格</th>
+                        <th>库存</th>
+                        <th>公开数量</th>
+                        <th>价格（日元）</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{foreach $data.spec as $v}}
+                        <tr>
+                            <td>{{$v.name}}</td>
+                            <td>
+                                {{if !empty($v['inventory'])}}{{$v.inventory}}{{/if}}
+                                <input type="hidden" name="specifications_inventory[]" value="{{if !empty($v['inventory'])}}{{$v.inventory}}{{/if}}" class="am-radius" />
+                                <input type="hidden" name="specifications_md5_key[]" value="{{$v.md5_key}}" />
+                                <input type="hidden" name="specifications_spec[]" value="{{$v.spec}}" />
+                            </td>
+                            <td>
+                                <input type="number" name="specifications_inventory_public[]" 
+                                value="{{if isset($data.inventory_sum) && ($data.inventory_sum < 20)}}{{$v.inventory}}{{else if !empty($v['inventory_public'])}}{{$v.inventory_public}}{{/if}}" 
+                                placeholder="公开数量" class="am-radius" min="0" max="{{if !empty($v['inventory'])}}{{$v.inventory}}{{/if}}" 
+                                {{if isset($data.inventory_sum) && ($data.inventory_sum < 20)}}readonly{{/if}} />
+                            </td>
+                            <td>
+                                <input type="hidden" name="spec_base_id[]" value="{{if !empty($v['spec_id'])}}{{$v.spec_id}}{{/if}}" />
+                                <input type="text" name="specifications_price[]" pattern="{{$default_price_regex}}" data-validation-message="请填写有效的销售金额"
+                                value="{{if !empty($v['spec_price'])}}{{$v.spec_price}}{{/if}}" placeholder="价格" class="am-radius" required />
+                            </td>
+                        </tr>
+                    {{/foreach}}
+                </tbody>
+            </table>
+            <div class="am-alert am-alert-warning am-radius" data-am-alert>
+                <button type="button" class="am-close">&times;</button>
+                <p>注意：</p>
+                <p>总库存大于 20 件时，公开件数不能少于 20 件！！</p>
+                <p>总库存小于 20 件时，全部公开</p>
+            </div>
+            <div class="form-inventory-submit">
+                <input type="hidden" name="goods_id" {{if !empty($data['data'])}} value="{{$data.data.goods_id}}"{{/if}} />
+                <button type="submit" class="am-btn am-btn-primary am-radius btn-loading-example am-btn-sm am-btn-block" data-am-loading="{loadingText:'处理中...'}">保存</button>
+            </div>
+        </form>
+        <!-- form end -->
+    {{else /}}
+        <div class="table-no"><i class="am-icon-warning"></i> 无规格数据</div>
+    {{/if}}
+</div>
+<!-- right content end  -->
+
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+<script type="text/javascript">
+// 返回处理
+function ViewModalBack(e)
+{
+    $(function()
+    {
+        if(e.code == 0)
+        {
+            $.AMUI.progress.done();
+            Prompt(e.msg, 'success');
+            setTimeout(function()
+            {
+                // 关闭弹窗、仅关闭窗口后列表数据不更新
+                // $(window.parent.document).find('.warehouse-goods-popup .am-close').trigger('click');
+
+                // 刷新页面、刷新页面列表数据重新加载
+                if(self.frameElement && self.frameElement.tagName == "IFRAME")
+                {
+                    parent.location.reload();
+                } else {
+                    window.location.reload();
+                }
+            }, 1500);
+        } else {
+            $('form.form-validation').find('button[type="submit"]').button('reset');
+            $.AMUI.progress.done();
+            Prompt(e.msg);
+        }
+    });
+}
+</script>

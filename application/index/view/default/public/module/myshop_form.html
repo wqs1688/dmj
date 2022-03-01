@@ -1,0 +1,74 @@
+{{include file="public/header" /}}
+
+<!-- header top nav -->
+{{include file="public/header_top_nav" /}}
+
+<!-- search -->
+{{include file="public/nav_search" /}}
+
+<!-- header nav -->
+{{include file="public/header_nav" /}}
+
+<!-- goods category -->
+{{include file="public/goods_category" /}}
+
+<!-- content -->
+<div class="am-container user-main">
+
+    <!-- user menu start -->
+    {{include file="public/user_menu" /}}
+    <!-- user menu end -->
+
+    <!-- content start -->
+    <div class="user-content">
+        <div class="user-content-body">
+            <!-- content top hook -->
+            <!-- content top start -->
+            <div class="content-top">
+                {{block name="form_content_top"}}{{/block}}
+            </div>
+            <!-- content top end -->
+
+            <!-- content start  -->
+            <div class="form-table-content">
+                <div class="goods-list" style="overflow:hidden;">
+                    {{if !empty($data_list) and is_array($data_list)}}
+                        {{foreach $data_list as $goods_key=>$goods}}
+                            <div class="goods-items" style="float: left; width: 25%;padding: 10px 15px;border-right: 1px solid;border-bottom: 1px solid;border-color: #eee;">
+                                <a href="{{$goods.goods_url}}" target="_blank" class="am-block am-text-center">
+                                    <img src="{{$goods.images}}" alt="{{$goods.title}}" class="goods-images" style="width:100%;"/>
+                                </a>
+                                <div class="outer-con">
+                                    <div class="goods-title am-text-truncate-2 am-margin-bottom-xs">
+                                        <a href="{{$goods['goods_url']}}" target="_blank" {{if !empty($goods.title_color)}}style="color:{{$goods.title_color}};"{{/if}}>{{$goods.title}}</a>
+                                    </div>
+                                     <p class="price am-text-truncate">{{$currency_symbol}}{{$goods.price}}</p>
+                                </div>
+                            </div>
+                        {{/foreach}}
+					{{else /}}
+					    <p>您还没有商品！</p>
+                    {{/if}}
+                </div>
+
+
+                <!-- page start -->
+                {{block name="form_page"}}
+                    {{if !empty($data_list) and isset($page_html)}}
+                        {{$page_html|raw}}
+                    {{/if}}
+                {{/block}}
+                <!-- page end -->
+            </div>
+            <!-- content end  -->
+        </div>
+    </div>
+    <!-- content end -->
+</div>
+
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+<!-- page buttom -->
+{{block name="form_page_bottom"}}{{/block}}

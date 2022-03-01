@@ -1,0 +1,11 @@
+<!-- 继承公共的 form -->
+{{extend name="public/module/form" /}}
+
+<!-- 表单顶部操作栏 -->
+{{block name="form_operate_top"}}
+    {{if $role_id == 1}}
+    <a href="{{:MyUrl('admin/goods/saveinfo').$lang_type}}" class="am-btn am-btn-secondary am-radius am-btn-xs am-icon-plus"> {{:lang("admin_index_text1")}}</a>
+    {{/if}}
+    <!-- 父级内容 -->
+    {__block__}
+{{/block}}
